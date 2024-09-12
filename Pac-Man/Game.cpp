@@ -66,6 +66,7 @@ void Game::Events(sf::RenderWindow& window)
 
 void Game::Update(sf::Time deltaTime)
 {
+	pacman.Animation();
 }
 
 void Game::Render(sf::RenderWindow& window)

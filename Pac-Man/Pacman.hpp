@@ -8,9 +8,11 @@ class Pacman
 		Pacman();
 		~Pacman();
 		void Render(sf::RenderWindow& window);
+		void Animation();
 
 	private:
 		sf::Texture pacmanTexture;
 		sf::Sprite pacman;
+		sf::Clock clock;
 };
 
