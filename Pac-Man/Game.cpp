@@ -4,7 +4,8 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 				redGhost(sf::Color::Red, sf::Vector2f(325,375)), 
 				pinkGhost(sf::Color::Magenta, sf::Vector2f(275, 427)),
 				orangeGhost(sf::Color(255, 165, 0), sf::Vector2f(325, 427)),
-				turquoiseGhost(sf::Color::Cyan, sf::Vector2f(375, 427))
+				turquoiseGhost(sf::Color::Cyan, sf::Vector2f(375, 427)),
+				pacman()
 {
 	if (!backgroundTexture.loadFromFile("..\\Background.png"))
 	{
@@ -75,6 +76,7 @@ void Game::Render(sf::RenderWindow& window)
 	pinkGhost.Render(window);
 	orangeGhost.Render(window);
 	turquoiseGhost.Render(window);
+	pacman.Render(window);
 	window.display();
 }
 

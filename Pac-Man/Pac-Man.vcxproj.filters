@@ -24,12 +24,18 @@
     <ClCompile Include="Ghost.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Pacman.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Ghost.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Pacman.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

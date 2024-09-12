@@ -4,6 +4,7 @@
 #include <vector>
 #include <list>
 #include "Ghost.hpp"
+#include "Pacman.hpp"
 
 class Game
 {
@@ -25,5 +26,6 @@ private:
 	Ghost pinkGhost;
 	Ghost orangeGhost;
 	Ghost turquoiseGhost;
+	Pacman pacman;
 };
 
