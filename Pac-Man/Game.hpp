@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <list>
+#include "Ghost.hpp"
 
 class Game
 {
@@ -17,6 +18,12 @@ private:
 	void Render(sf::RenderWindow& window);
 	sf::Clock fpsClock;
 	unsigned int frameCount;
+	sf::Texture backgroundTexture;
+	sf::Sprite background;
 	void Reset();
+	Ghost redGhost;
+	Ghost pinkGhost;
+	Ghost orangeGhost;
+	Ghost turquoiseGhost;
 };
 

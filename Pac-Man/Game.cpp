@@ -1,7 +1,20 @@
 #include "Game.hpp"
 
-Game::Game() : frameCount(0), fpsClock()
+Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(), 
+				redGhost(sf::Color::Red, sf::Vector2f(325,375)), 
+				pinkGhost(sf::Color::Magenta, sf::Vector2f(275, 427)),
+				orangeGhost(sf::Color(255, 165, 0), sf::Vector2f(325, 427)),
+				turquoiseGhost(sf::Color::Cyan, sf::Vector2f(375, 427))
 {
+	if (!backgroundTexture.loadFromFile("..\\Background.png"))
+	{
+		std::cout << "Error loading background.png" << std::endl;
+	}
+	else
+	{
+		background.setTexture(backgroundTexture);
+		background.setPosition(0, 100);
+	}
 }
 
 Game::~Game()
@@ -57,7 +70,11 @@ void Game::Update(sf::Time deltaTime)
 void Game::Render(sf::RenderWindow& window)
 {
 	window.clear();
-
+	window.draw(background);
+	redGhost.Render(window);
+	pinkGhost.Render(window);
+	orangeGhost.Render(window);
+	turquoiseGhost.Render(window);
 	window.display();
 }
 
