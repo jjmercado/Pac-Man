@@ -61,16 +61,14 @@ void Game::Events(sf::RenderWindow& window)
 		{
 			window.close();
 		}
+
+		pacman.Events(event);
 	}
 }
 
 void Game::Update(sf::Time deltaTime)
 {
-	pacman.Animation();
-	redGhost.Animation();
-	pinkGhost.Animation();
-	orangeGhost.Animation();
-	turquoiseGhost.Animation();
+	pacman.Update(deltaTime);
 }
 
 void Game::Render(sf::RenderWindow& window)
