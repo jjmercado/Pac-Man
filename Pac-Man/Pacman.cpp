@@ -1,6 +1,6 @@
 #include "Pacman.hpp"
 
-Pacman::Pacman()
+Pacman::Pacman() : currentFrame(0)
 
 {
 	if (!pacmanTexture.loadFromFile("..\\pacman.png"))
@@ -28,8 +28,7 @@ void Pacman::Animation()
 {
 	sf::Time time = clock.getElapsedTime();
 	float delay = 0.1f; // Zeit in Sekunden zwischen den Frames
-	static int currentFrame = 0; // Aktueller Frame-Index
-	static sf::Time lastUpdateTime = sf::Time::Zero; // Zeit des letzten Frame-Wechsels
+	sf::Time lastUpdateTime = sf::Time::Zero; // Zeit des letzten Frame-Wechsels
 
 	std::vector<sf::IntRect> pacmanFrames;
 	pacmanFrames.push_back(sf::IntRect(0, 0, 50, 50));
@@ -42,5 +41,6 @@ void Pacman::Animation()
 		currentFrame = (currentFrame + 1) % pacmanFrames.size(); // Nächster Frame
 		pacman.setTextureRect(pacmanFrames[currentFrame]);
 		lastUpdateTime = time; // Timer zurücksetzen
+		clock.restart();
 	}
 }

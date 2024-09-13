@@ -67,6 +67,10 @@ void Game::Events(sf::RenderWindow& window)
 void Game::Update(sf::Time deltaTime)
 {
 	pacman.Animation();
+	redGhost.Animation();
+	pinkGhost.Animation();
+	orangeGhost.Animation();
+	turquoiseGhost.Animation();
 }
 
 void Game::Render(sf::RenderWindow& window)

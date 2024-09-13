@@ -14,5 +14,6 @@ class Pacman
 		sf::Texture pacmanTexture;
 		sf::Sprite pacman;
 		sf::Clock clock;
+		int currentFrame;
 };
 
