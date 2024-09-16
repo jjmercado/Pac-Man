@@ -16,6 +16,23 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 		background.setTexture(backgroundTexture);
 		background.setPosition(0, 100);
 	}
+
+	collisionRects.push_back(new Collision(sf::Vector2f(75, 175), 100, 100));
+	collisionRects.push_back(new Collision(sf::Vector2f(225, 175), 50, 100));
+	collisionRects.push_back(new Collision(sf::Vector2f(425, 175), 50, 100));
+	collisionRects.push_back(new Collision(sf::Vector2f(525, 175), 100, 100));
+	collisionRects.push_back(new Collision(sf::Vector2f(225, 325), 50, 50));
+	collisionRects.push_back(new Collision(sf::Vector2f(325, 275), 50, 100));
+	collisionRects.push_back(new Collision(sf::Vector2f(425, 325), 50, 50));
+	collisionRects.push_back(new Collision(sf::Vector2f(225, 425), 25, 50));
+	collisionRects.push_back(new Collision(sf::Vector2f(450, 425), 25, 50));
+	collisionRects.push_back(new Collision(sf::Vector2f(325, 525), 50, 100));
+	collisionRects.push_back(new Collision(sf::Vector2f(225, 525), 50, 50));
+	collisionRects.push_back(new Collision(sf::Vector2f(425, 525), 50, 50));
+	collisionRects.push_back(new Collision(sf::Vector2f(75, 625), 100, 100));
+	collisionRects.push_back(new Collision(sf::Vector2f(225, 625), 50, 100));
+	collisionRects.push_back(new Collision(sf::Vector2f(425, 625), 50, 100));
+	collisionRects.push_back(new Collision(sf::Vector2f(525, 625), 100, 100));
 }
 
 Game::~Game()
@@ -80,6 +97,10 @@ void Game::Render(sf::RenderWindow& window)
 	orangeGhost.Render(window);
 	turquoiseGhost.Render(window);
 	pacman.Render(window);
+	for(auto& rect : collisionRects)
+	{
+		rect->Render(window);
+	}
 	window.display();
 }
 

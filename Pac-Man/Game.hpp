@@ -5,6 +5,7 @@
 #include <list>
 #include "Ghost.hpp"
 #include "Pacman.hpp"
+#include "Collision.hpp"
 
 class Game
 {
@@ -27,5 +28,6 @@ private:
 	Ghost orangeGhost;
 	Ghost turquoiseGhost;
 	Pacman pacman;
+	std::vector<Collision*> collisionRects;
 };
 
