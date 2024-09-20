@@ -1,7 +1,6 @@
 #include "Pacman.hpp"
 
-Pacman::Pacman() : currentFrame(0)
-
+Pacman::Pacman() : currentFrame(0), isColliding(false), directionChanged(false)
 {
 	if (!pacmanTexture.loadFromFile("..\\pacman.png"))
 	{
@@ -15,6 +14,11 @@ Pacman::Pacman() : currentFrame(0)
 	pacman.setScale(-1.0, -1.0);
 	speed = 100.0f;
 	direction = sf::Vector2f(0, 0);
+
+	collision.setOrigin(25, 18);
+	collision.setSize(sf::Vector2f(2, 36));
+	collision.setPosition(pacman.getPosition());
+	collision.setFillColor(sf::Color::Blue);
 }
 
 Pacman::~Pacman()
@@ -23,37 +27,100 @@ Pacman::~Pacman()
 
 void Pacman::Events(sf::Event event)
 {
-
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
 		direction = sf::Vector2f(-1, 0);
+		directionChanged = true;
 	}
 	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
 		direction = sf::Vector2f(1, 0);
+		directionChanged = true;
 	}
 	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
 		direction = sf::Vector2f(0, -1);
+		directionChanged = true;
 	}
 	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
 		direction = sf::Vector2f(0, 1);
+		directionChanged = true;
 	}
 }
 
 void Pacman::Render(sf::RenderWindow& window)
 {
 	window.draw(pacman);
+	window.draw(collision);
 }
 
 void Pacman::Update(sf::Time deltaTime)
 {
 	Animation(direction);
-	pacman.move(direction * speed * deltaTime.asSeconds());
+
+	if (isColliding)
+	{
+		if (!directionChanged)
+		{
+			speed = 0.0f;
+		}
+		else
+		{
+			speed = 100.0f;
+			directionChanged = false;
+			isColliding = false;
+		}
+	}
+
+	velocity = direction * speed * deltaTime.asSeconds();
+	pacman.move(velocity);
+	collision.move(velocity);
+
+	if (direction == sf::Vector2f(1, 0))
+	{
+		collision.setPosition(pacman.getPosition() + sf::Vector2f(50, 0));
+		collision.setSize(sf::Vector2f(2, 36));
+		collision.setOrigin(25, 18);
+	}
+	else if (direction == sf::Vector2f(-1, 0))
+	{
+		collision.setPosition(pacman.getPosition());
+		collision.setSize(sf::Vector2f(2, 36));
+		collision.setOrigin(25, 18);
+	}
+	else if (direction == sf::Vector2f(0, 1))
+	{
+		collision.setPosition(pacman.getPosition() + sf::Vector2f(0, 50));
+		collision.setSize(sf::Vector2f(36, 2));
+		collision.setOrigin(18, 25);
+	}
+	else if (direction == sf::Vector2f(0, -1))
+	{
+		collision.setPosition(pacman.getPosition());
+		collision.setSize(sf::Vector2f(36, 2));
+		collision.setOrigin(18, 25);
+	}
+
+	if (isColliding && direction == sf::Vector2f(1, 0))
+	{
+		collision.setPosition(pacman.getPosition() + sf::Vector2f(50 - 10, 0));
+	}
+	else if(isColliding && direction == sf::Vector2f(-1, 0))
+	{
+		collision.setPosition(pacman.getPosition() + sf::Vector2f(10, 0));
+	}
+	else if (isColliding && direction == sf::Vector2f(0, 1))
+	{
+		collision.setPosition(pacman.getPosition() + sf::Vector2f(0, 50 - 10));
+	}
+	else if (isColliding && direction == sf::Vector2f(0, -1))
+	{
+		collision.setPosition(pacman.getPosition() + sf::Vector2f(0, 10));
+	}
 }
 
 void Pacman::Animation(sf::Vector2f direction)

@@ -11,13 +11,17 @@ class Pacman
 		void Render(sf::RenderWindow& window);
 		void Update(sf::Time deltaTime);
 		void Animation(sf::Vector2f direction);
+		bool isColliding;
+		bool directionChanged;
+		sf::RectangleShape collision;
 
 	private:
-		sf::Texture pacmanTexture;
 		sf::Sprite pacman;
+		sf::Vector2f velocity;
+		float speed;
+		sf::Vector2f direction;
+		sf::Texture pacmanTexture;
 		sf::Clock clock;
 		int currentFrame;
-		sf::Vector2f direction;
-		float speed;
 };
 

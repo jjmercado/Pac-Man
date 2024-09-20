@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 class Collision
 {
@@ -8,10 +9,11 @@ class Collision
 		~Collision();
 		void Render(sf::RenderWindow& window);
 		void Update(sf::Time deltaTime);
+		bool IsColliding(sf::RectangleShape collisionRect);
 
 	private:
+		sf::Sprite collision;
 		sf::Image collisionImage;
 		sf::Texture collisionTexture;
-		sf::Sprite collision;
 };
 

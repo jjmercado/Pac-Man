@@ -20,3 +20,12 @@ void Collision::Render(sf::RenderWindow& window)
 void Collision::Update(sf::Time time)
 {
 }
+
+bool Collision::IsColliding(sf::RectangleShape collisionRect)
+{
+	if (collision.getGlobalBounds().intersects(collisionRect.getGlobalBounds()))
+	{
+		return true;
+	}
+	return false;
+}

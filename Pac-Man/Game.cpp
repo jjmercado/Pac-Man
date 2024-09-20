@@ -17,6 +17,7 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 		background.setPosition(0, 100);
 	}
 
+	// Inner collision rects
 	collisionRects.push_back(new Collision(sf::Vector2f(75, 175), 100, 100));
 	collisionRects.push_back(new Collision(sf::Vector2f(225, 175), 50, 100));
 	collisionRects.push_back(new Collision(sf::Vector2f(425, 175), 50, 100));
@@ -33,6 +34,19 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 	collisionRects.push_back(new Collision(sf::Vector2f(225, 625), 50, 100));
 	collisionRects.push_back(new Collision(sf::Vector2f(425, 625), 50, 100));
 	collisionRects.push_back(new Collision(sf::Vector2f(525, 625), 100, 100));
+	// Outer collision rects
+	collisionRects.push_back(new Collision(sf::Vector2f(0, 100), 800, 25));
+	collisionRects.push_back(new Collision(sf::Vector2f(0, 125), 25, 200));
+	collisionRects.push_back(new Collision(sf::Vector2f(0, 325), 175, 100));
+	collisionRects.push_back(new Collision(sf::Vector2f(0, 475), 175, 100));
+	collisionRects.push_back(new Collision(sf::Vector2f(0, 575), 25, 200));
+	collisionRects.push_back(new Collision(sf::Vector2f(0, 775), 800, 25));
+	collisionRects.push_back(new Collision(sf::Vector2f(675, 575), 25, 200));
+	collisionRects.push_back(new Collision(sf::Vector2f(525, 475), 175, 100));
+	collisionRects.push_back(new Collision(sf::Vector2f(525, 325), 175, 100));
+	collisionRects.push_back(new Collision(sf::Vector2f(675, 125), 25, 200));
+	collisionRects.push_back(new Collision(sf::Vector2f(325, 125), 50, 100));
+	collisionRects.push_back(new Collision(sf::Vector2f(325, 675), 50, 100));
 }
 
 Game::~Game()
@@ -86,6 +100,14 @@ void Game::Events(sf::RenderWindow& window)
 void Game::Update(sf::Time deltaTime)
 {
 	pacman.Update(deltaTime);
+
+	for (auto& rect : collisionRects)
+	{
+		if (rect->IsColliding(pacman.collision))
+		{
+			pacman.isColliding = true;
+		}
+	}
 }
 
 void Game::Render(sf::RenderWindow& window)
