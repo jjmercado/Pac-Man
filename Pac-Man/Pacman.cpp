@@ -6,12 +6,16 @@ Pacman::Pacman() : currentFrame(0), isColliding(false), directionChanged(false)
 	{
 		std::cout << "Error loading pacman.png" << std::endl;
 	}
-	pacmanTexture.setSmooth(true);
-	pacman.setTextureRect(sf::IntRect(0, 0, 50, 50));
-	pacman.setTexture(pacmanTexture);
-	pacman.setPosition(350, 650);
-	pacman.setOrigin(25, 25);
-	pacman.setScale(-1.0, -1.0);
+	else 
+	{
+		pacmanTexture.setSmooth(true);
+		pacman.setTextureRect(sf::IntRect(0, 0, 50, 50));
+		pacman.setTexture(pacmanTexture);
+		pacman.setPosition(350, 650);
+		pacman.setOrigin(25, 25);
+		pacman.setScale(-1.0, -1.0);
+	}
+
 	speed = 100.0f;
 	direction = sf::Vector2f(0, 0);
 
@@ -76,12 +80,13 @@ void Pacman::Update(sf::Time deltaTime)
 		}
 	}
 
+	UpdateCollisionRect();
+	SetCollisionRect();
+
 	velocity = direction * speed * deltaTime.asSeconds();
 	pacman.move(velocity);
 	collision.move(velocity);
 
-	UpdateCollisionRect();
-	SetCollisionRect();
 }
 
 void Pacman::Animation(sf::Vector2f direction)

@@ -29,5 +29,7 @@ private:
 	Ghost turquoiseGhost;
 	Pacman pacman;
 	std::vector<Collision*> collisionRects;
+	sf::Vertex lineY[2];
+	sf::Vertex lineX[2];
 };
 

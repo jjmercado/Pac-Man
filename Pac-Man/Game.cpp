@@ -17,36 +17,45 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 		background.setPosition(0, 100);
 	}
 
-	// Inner collision rects
-	collisionRects.push_back(new Collision(sf::Vector2f(75, 175), 100, 100));
-	collisionRects.push_back(new Collision(sf::Vector2f(225, 175), 50, 100));
-	collisionRects.push_back(new Collision(sf::Vector2f(425, 175), 50, 100));
-	collisionRects.push_back(new Collision(sf::Vector2f(525, 175), 100, 100));
-	collisionRects.push_back(new Collision(sf::Vector2f(225, 325), 50, 50));
-	collisionRects.push_back(new Collision(sf::Vector2f(325, 275), 50, 100));
-	collisionRects.push_back(new Collision(sf::Vector2f(425, 325), 50, 50));
-	collisionRects.push_back(new Collision(sf::Vector2f(225, 425), 25, 50));
-	collisionRects.push_back(new Collision(sf::Vector2f(450, 425), 25, 50));
-	collisionRects.push_back(new Collision(sf::Vector2f(325, 525), 50, 100));
-	collisionRects.push_back(new Collision(sf::Vector2f(225, 525), 50, 50));
-	collisionRects.push_back(new Collision(sf::Vector2f(425, 525), 50, 50));
-	collisionRects.push_back(new Collision(sf::Vector2f(75, 625), 100, 100));
-	collisionRects.push_back(new Collision(sf::Vector2f(225, 625), 50, 100));
-	collisionRects.push_back(new Collision(sf::Vector2f(425, 625), 50, 100));
-	collisionRects.push_back(new Collision(sf::Vector2f(525, 625), 100, 100));
-	// Outer collision rects
-	collisionRects.push_back(new Collision(sf::Vector2f(0, 100), 800, 25));
-	collisionRects.push_back(new Collision(sf::Vector2f(0, 125), 25, 200));
-	collisionRects.push_back(new Collision(sf::Vector2f(0, 325), 175, 100));
-	collisionRects.push_back(new Collision(sf::Vector2f(0, 475), 175, 100));
-	collisionRects.push_back(new Collision(sf::Vector2f(0, 575), 25, 200));
-	collisionRects.push_back(new Collision(sf::Vector2f(0, 775), 800, 25));
-	collisionRects.push_back(new Collision(sf::Vector2f(675, 575), 25, 200));
-	collisionRects.push_back(new Collision(sf::Vector2f(525, 475), 175, 100));
-	collisionRects.push_back(new Collision(sf::Vector2f(525, 325), 175, 100));
-	collisionRects.push_back(new Collision(sf::Vector2f(675, 125), 25, 200));
-	collisionRects.push_back(new Collision(sf::Vector2f(325, 125), 50, 100));
-	collisionRects.push_back(new Collision(sf::Vector2f(325, 675), 50, 100));
+	// Inner collision rects left side
+	collisionRects.push_back(new Collision(sf::Vector2f(100, 200), 100, 100));
+	collisionRects.push_back(new Collision(sf::Vector2f(100, 350), 100, 100));
+	collisionRects.push_back(new Collision(sf::Vector2f(100, 500), 100, 100));
+	collisionRects.push_back(new Collision(sf::Vector2f(100, 650), 100, 100));
+	collisionRects.push_back(new Collision(sf::Vector2f(250, 200), 50, 150));
+	collisionRects.push_back(new Collision(sf::Vector2f(250, 700), 50, 50));
+
+	// Inner collision rects right side
+	collisionRects.push_back(new Collision(sf::Vector2f(550, 200), 100, 100));
+	collisionRects.push_back(new Collision(sf::Vector2f(550, 350), 100, 100));
+	collisionRects.push_back(new Collision(sf::Vector2f(550, 500), 100, 100));
+	collisionRects.push_back(new Collision(sf::Vector2f(550, 650), 100, 100));
+	collisionRects.push_back(new Collision(sf::Vector2f(450, 200), 50, 150));
+	collisionRects.push_back(new Collision(sf::Vector2f(450, 700), 50, 50));
+
+	// Middle collision rects
+	collisionRects.push_back(new Collision(sf::Vector2f(350, 150), 50, 200));
+
+	// Ghost house collision rects
+	collisionRects.push_back(new Collision(sf::Vector2f(250, 400), 100, 50));
+	collisionRects.push_back(new Collision(sf::Vector2f(250, 450), 50, 50));
+	collisionRects.push_back(new Collision(sf::Vector2f(400, 400), 100, 50));
+	collisionRects.push_back(new Collision(sf::Vector2f(450, 450), 50, 50));
+	collisionRects.push_back(new Collision(sf::Vector2f(250, 500), 250, 50));
+
+	// T collions rects
+	collisionRects.push_back(new Collision(sf::Vector2f(250, 600), 250, 50));
+	collisionRects.push_back(new Collision(sf::Vector2f(350, 650), 50, 100));
+
+	// Top half collision rects
+	collisionRects.push_back(new Collision(sf::Vector2f(0, 100), 800, 50));
+	collisionRects.push_back(new Collision(sf::Vector2f(0, 150), 50, 300));
+	collisionRects.push_back(new Collision(sf::Vector2f(700, 150), 50, 300));
+
+	// Bottom half collision rects
+	collisionRects.push_back(new Collision(sf::Vector2f(0, 800), 800, 50));
+	collisionRects.push_back(new Collision(sf::Vector2f(0, 500), 50, 300));
+	collisionRects.push_back(new Collision(sf::Vector2f(700, 500), 50, 300));
 }
 
 Game::~Game()
@@ -122,6 +131,19 @@ void Game::Render(sf::RenderWindow& window)
 	for(auto& rect : collisionRects)
 	{
 		rect->Render(window);
+	}
+
+	for (int i = 0; i < window.getSize().y; i += 50)
+	{
+		lineY[0] = sf::Vertex(sf::Vector2f(0, i), sf::Color::White);
+		lineY[1] = sf::Vertex(sf::Vector2f(window.getSize().x, i), sf::Color::White);
+		window.draw(lineY, 2, sf::Lines);
+		for (int j = 0; j < window.getSize().x; j += 50)
+		{
+			lineX[0] = sf::Vertex(sf::Vector2f(j, 0), sf::Color::White);
+			lineX[1] = sf::Vertex(sf::Vector2f(j, window.getSize().y), sf::Color::White);
+			window.draw(lineX, 2, sf::Lines);
+		}
 	}
 	window.display();
 }
