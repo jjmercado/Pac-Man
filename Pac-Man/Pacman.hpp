@@ -15,10 +15,10 @@ class Pacman
 		void Animation(sf::Vector2f direction);
 		bool isColliding;
 		bool directionChanged;
-		std::vector<sf::RectangleShape*> collisionDetectionRects;
 		void IsCollidingWithWall(std::vector<Collision*> collisionRects);
 
 	private:
+		std::vector<sf::RectangleShape*> collisionDetectionRects;
 		sf::RectangleShape leftCollisionRect;
 		sf::RectangleShape rightCollisionRect;
 		sf::RectangleShape upCollisionRect;
@@ -30,7 +30,5 @@ class Pacman
 		sf::Texture pacmanTexture;
 		sf::Clock clock;
 		int currentFrame;
-		void UpdateCollisionRect();
-		void SetCollisionRect();
 };
 
