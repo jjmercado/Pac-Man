@@ -23,5 +23,7 @@ class Pacman
 		sf::Texture pacmanTexture;
 		sf::Clock clock;
 		int currentFrame;
+		void UpdateCollisionRect();
+		void SetCollisionRect();
 };
 
