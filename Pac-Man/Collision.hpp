@@ -9,10 +9,9 @@ class Collision
 		~Collision();
 		void Render(sf::RenderWindow& window);
 		void Update(sf::Time deltaTime);
-		bool IsColliding(sf::RectangleShape collisionRect);
+		sf::Sprite collision;
 
 	private:
-		sf::Sprite collision;
 		sf::Image collisionImage;
 		sf::Texture collisionTexture;
 };

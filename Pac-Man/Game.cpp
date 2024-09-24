@@ -1,10 +1,10 @@
 #include "Game.hpp"
 
 Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(), 
-				redGhost(sf::Color::Red, sf::Vector2f(325,375)), 
-				pinkGhost(sf::Color::Magenta, sf::Vector2f(275, 427)),
-				orangeGhost(sf::Color(255, 165, 0), sf::Vector2f(325, 427)),
-				turquoiseGhost(sf::Color::Cyan, sf::Vector2f(375, 427)),
+				redGhost(sf::Color::Red, sf::Vector2f(350,400)), 
+				pinkGhost(sf::Color::Magenta, sf::Vector2f(300, 450)),
+				orangeGhost(sf::Color(255, 165, 0), sf::Vector2f(350, 450)),
+				turquoiseGhost(sf::Color::Cyan, sf::Vector2f(400, 450)),
 				pacman()
 {
 	if (!backgroundTexture.loadFromFile("..\\Background.png"))
@@ -110,13 +110,7 @@ void Game::Update(sf::Time deltaTime)
 {
 	pacman.Update(deltaTime);
 
-	for (auto& rect : collisionRects)
-	{
-		if (rect->IsColliding(pacman.collision))
-		{
-			pacman.isColliding = true;
-		}
-	}
+	pacman.IsCollidingWithWall(collisionRects);
 }
 
 void Game::Render(sf::RenderWindow& window)
@@ -127,11 +121,11 @@ void Game::Render(sf::RenderWindow& window)
 	pinkGhost.Render(window);
 	orangeGhost.Render(window);
 	turquoiseGhost.Render(window);
-	pacman.Render(window);
 	for(auto& rect : collisionRects)
 	{
 		rect->Render(window);
 	}
+	pacman.Render(window);
 
 	for (int i = 0; i < window.getSize().y; i += 50)
 	{

@@ -1,5 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <vector>
+#include "Collision.hpp"
 #include <iostream>
 
 class Pacman
@@ -13,9 +15,14 @@ class Pacman
 		void Animation(sf::Vector2f direction);
 		bool isColliding;
 		bool directionChanged;
-		sf::RectangleShape collision;
+		std::vector<sf::RectangleShape*> collisionDetectionRects;
+		void IsCollidingWithWall(std::vector<Collision*> collisionRects);
 
 	private:
+		sf::RectangleShape leftCollisionRect;
+		sf::RectangleShape rightCollisionRect;
+		sf::RectangleShape upCollisionRect;
+		sf::RectangleShape downCollisionRect;
 		sf::Sprite pacman;
 		sf::Vector2f velocity;
 		float speed;

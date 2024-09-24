@@ -11,7 +11,7 @@ Pacman::Pacman() : currentFrame(0), isColliding(false), directionChanged(false)
 		pacmanTexture.setSmooth(true);
 		pacman.setTextureRect(sf::IntRect(0, 0, 50, 50));
 		pacman.setTexture(pacmanTexture);
-		pacman.setPosition(350, 650);
+		pacman.setPosition(375, 575);
 		pacman.setOrigin(25, 25);
 		pacman.setScale(-1.0, -1.0);
 	}
@@ -19,10 +19,30 @@ Pacman::Pacman() : currentFrame(0), isColliding(false), directionChanged(false)
 	speed = 100.0f;
 	direction = sf::Vector2f(0, 0);
 
-	collision.setOrigin(25, 18);
-	collision.setSize(sf::Vector2f(2, 36));
-	collision.setPosition(pacman.getPosition());
-	collision.setFillColor(sf::Color::Blue);
+	leftCollisionRect.setOrigin(25, 25);
+	leftCollisionRect.setSize(sf::Vector2f(50, 50));
+	leftCollisionRect.setPosition(pacman.getPosition() - sf::Vector2f(50,0));
+	leftCollisionRect.setFillColor(sf::Color::Blue);
+
+	rightCollisionRect.setOrigin(25, 25);
+	rightCollisionRect.setSize(sf::Vector2f(50, 50));
+	rightCollisionRect.setPosition(pacman.getPosition() + sf::Vector2f(50, 0));
+	rightCollisionRect.setFillColor(sf::Color::Blue);
+
+	upCollisionRect.setOrigin(25, 25);
+	upCollisionRect.setSize(sf::Vector2f(50, 50));
+	upCollisionRect.setPosition(pacman.getPosition() - sf::Vector2f(0, 50));
+	upCollisionRect.setFillColor(sf::Color::Blue);
+
+	downCollisionRect.setOrigin(25, 25);
+	downCollisionRect.setSize(sf::Vector2f(50, 50));
+	downCollisionRect.setPosition(pacman.getPosition() + sf::Vector2f(0, 50));
+	downCollisionRect.setFillColor(sf::Color::Blue);
+
+	collisionDetectionRects.push_back(&leftCollisionRect);
+	collisionDetectionRects.push_back(&rightCollisionRect);
+	collisionDetectionRects.push_back(&upCollisionRect);
+	collisionDetectionRects.push_back(&downCollisionRect);
 }
 
 Pacman::~Pacman()
@@ -59,7 +79,10 @@ void Pacman::Events(sf::Event event)
 void Pacman::Render(sf::RenderWindow& window)
 {
 	window.draw(pacman);
-	window.draw(collision);
+	for (auto& rect : collisionDetectionRects)
+	{
+		window.draw(*rect);
+	}
 }
 
 void Pacman::Update(sf::Time deltaTime)
@@ -85,8 +108,11 @@ void Pacman::Update(sf::Time deltaTime)
 
 	velocity = direction * speed * deltaTime.asSeconds();
 	pacman.move(velocity);
-	collision.move(velocity);
 
+	for (auto& rect : collisionDetectionRects)
+	{
+		rect->move(velocity);
+	}
 }
 
 void Pacman::Animation(sf::Vector2f direction)
@@ -137,50 +163,74 @@ void Pacman::Animation(sf::Vector2f direction)
 	}
 }
 
+void Pacman::IsCollidingWithWall(std::vector<Collision*> collisionRects)
+{
+	for (auto& rect : collisionDetectionRects)
+	{
+		bool isColliding = false;
+		for (auto& wall : collisionRects)
+		{
+			if (rect->getGlobalBounds().intersects(wall->collision.getGlobalBounds()))
+			{
+				isColliding = true;
+				break; // Keine weitere Prüfung erforderlich, da eine Kollision gefunden wurde
+			}
+		}
+		if (isColliding)
+		{
+			rect->setFillColor(sf::Color::White);
+		}
+		else
+		{
+			rect->setFillColor(sf::Color::Blue);
+		}
+	}
+}
+
 void Pacman::UpdateCollisionRect()
 {
-	if (direction == sf::Vector2f(1, 0))
-	{
-		collision.setPosition(pacman.getPosition() + sf::Vector2f(50, 0));
-		collision.setSize(sf::Vector2f(2, 36));
-		collision.setOrigin(25, 18);
-	}
-	else if (direction == sf::Vector2f(-1, 0))
-	{
-		collision.setPosition(pacman.getPosition());
-		collision.setSize(sf::Vector2f(2, 36));
-		collision.setOrigin(25, 18);
-	}
-	else if (direction == sf::Vector2f(0, 1))
-	{
-		collision.setPosition(pacman.getPosition() + sf::Vector2f(0, 50));
-		collision.setSize(sf::Vector2f(36, 2));
-		collision.setOrigin(18, 25);
-	}
-	else if (direction == sf::Vector2f(0, -1))
-	{
-		collision.setPosition(pacman.getPosition());
-		collision.setSize(sf::Vector2f(36, 2));
-		collision.setOrigin(18, 25);
-	}
+	//if (direction == sf::Vector2f(1, 0))
+	//{
+	//	collision.setPosition(pacman.getPosition() + sf::Vector2f(50, 0));
+	//	collision.setSize(sf::Vector2f(2, 36));
+	//	collision.setOrigin(25, 18);
+	//}
+	//else if (direction == sf::Vector2f(-1, 0))
+	//{
+	//	collision.setPosition(pacman.getPosition());
+	//	collision.setSize(sf::Vector2f(2, 36));
+	//	collision.setOrigin(25, 18);
+	//}
+	//else if (direction == sf::Vector2f(0, 1))
+	//{
+	//	collision.setPosition(pacman.getPosition() + sf::Vector2f(0, 50));
+	//	collision.setSize(sf::Vector2f(36, 2));
+	//	collision.setOrigin(18, 25);
+	//}
+	//else if (direction == sf::Vector2f(0, -1))
+	//{
+	//	collision.setPosition(pacman.getPosition());
+	//	collision.setSize(sf::Vector2f(36, 2));
+	//	collision.setOrigin(18, 25);
+	//}
 }
 
 void Pacman::SetCollisionRect()
 {
-	if (isColliding && direction == sf::Vector2f(1, 0))
-	{
-		collision.setPosition(pacman.getPosition() + sf::Vector2f(50 - 10, 0));
-	}
-	else if (isColliding && direction == sf::Vector2f(-1, 0))
-	{
-		collision.setPosition(pacman.getPosition() + sf::Vector2f(10, 0));
-	}
-	else if (isColliding && direction == sf::Vector2f(0, 1))
-	{
-		collision.setPosition(pacman.getPosition() + sf::Vector2f(0, 50 - 10));
-	}
-	else if (isColliding && direction == sf::Vector2f(0, -1))
-	{
-		collision.setPosition(pacman.getPosition() + sf::Vector2f(0, 10));
-	}
+	//if (isColliding && direction == sf::Vector2f(1, 0))
+	//{
+	//	collision.setPosition(pacman.getPosition() + sf::Vector2f(50 - 10, 0));
+	//}
+	//else if (isColliding && direction == sf::Vector2f(-1, 0))
+	//{
+	//	collision.setPosition(pacman.getPosition() + sf::Vector2f(10, 0));
+	//}
+	//else if (isColliding && direction == sf::Vector2f(0, 1))
+	//{
+	//	collision.setPosition(pacman.getPosition() + sf::Vector2f(0, 50 - 10));
+	//}
+	//else if (isColliding && direction == sf::Vector2f(0, -1))
+	//{
+	//	collision.setPosition(pacman.getPosition() + sf::Vector2f(0, 10));
+	//}
 }
