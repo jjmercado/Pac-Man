@@ -1,8 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "Collision.hpp"
 #include <iostream>
+#include "Collision.hpp"
+#include "CollisionDetectionRect.hpp"
 
 class Pacman
 {
@@ -18,11 +19,7 @@ class Pacman
 		void IsCollidingWithWall(std::vector<Collision*> collisionRects);
 
 	private:
-		std::vector<sf::RectangleShape*> collisionDetectionRects;
-		sf::RectangleShape leftCollisionRect;
-		sf::RectangleShape rightCollisionRect;
-		sf::RectangleShape upCollisionRect;
-		sf::RectangleShape downCollisionRect;
+		std::vector<CollisionDetectionRect*> collisionDetectionRects;
 		sf::Sprite pacman;
 		sf::Vector2f velocity;
 		float speed;
