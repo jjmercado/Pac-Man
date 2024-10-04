@@ -108,9 +108,7 @@ void Game::Events(sf::RenderWindow& window)
 
 void Game::Update(sf::Time deltaTime)
 {
-	pacman.Update(deltaTime);
-
-	pacman.IsCollidingWithWall(collisionRects);
+	pacman.Update(deltaTime, collisionRects);
 }
 
 void Game::Render(sf::RenderWindow& window)

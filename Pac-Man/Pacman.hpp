@@ -12,11 +12,12 @@ class Pacman
 		~Pacman();
 		void Events(sf::Event event);
 		void Render(sf::RenderWindow& window);
-		void Update(sf::Time deltaTime);
+		void Update(sf::Time deltaTime, const std::vector<Collision*>& collisionRects);
 		void Animation(sf::Vector2f direction);
 		bool isColliding;
 		bool directionChanged;
-		void IsCollidingWithWall(std::vector<Collision*> collisionRects);
+		void CheckCollisionWithWall(const std::vector<Collision*>& collisionRects);
+		void ReactToCollision();
 
 	private:
 		std::vector<CollisionDetectionRect*> collisionDetectionRects;
