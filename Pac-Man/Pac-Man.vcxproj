@@ -131,7 +131,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="CollisionDetectionRect.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -139,7 +138,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision.hpp" />
-    <ClInclude Include="CollisionDetectionRect.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="Ghost.hpp" />
     <ClInclude Include="Pacman.hpp" />

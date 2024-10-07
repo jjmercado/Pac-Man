@@ -1,8 +1,12 @@
 #include "Collision.hpp"
 
+Collision::Collision()
+{
+}
+
 Collision::Collision(sf::Vector2f position, int width, int height)
 {
-	collisionImage.create(width, height, sf::Color::Red);
+	collisionImage.create(width, height, sf::Color::White);
 	collisionTexture.loadFromImage(collisionImage);
 	collision.setTexture(collisionTexture);
 	collision.setPosition(position);
@@ -19,4 +23,9 @@ void Collision::Render(sf::RenderWindow& window)
 
 void Collision::Update(sf::Time time)
 {
+}
+
+void Collision::SetColor(sf::Color color)
+{
+	collision.setColor(color);
 }

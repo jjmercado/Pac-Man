@@ -56,6 +56,11 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 	collisionRects.push_back(new Collision(sf::Vector2f(0, 800), 800, 50));
 	collisionRects.push_back(new Collision(sf::Vector2f(0, 500), 50, 300));
 	collisionRects.push_back(new Collision(sf::Vector2f(700, 500), 50, 300));
+
+	for (auto& rect : collisionRects)
+	{
+		rect->SetColor(sf::Color::Red);
+	}
 }
 
 Game::~Game()
@@ -125,18 +130,18 @@ void Game::Render(sf::RenderWindow& window)
 	}
 	pacman.Render(window);
 
-	for (int i = 0; i < window.getSize().y; i += 50)
-	{
-		lineY[0] = sf::Vertex(sf::Vector2f(0, i), sf::Color::White);
-		lineY[1] = sf::Vertex(sf::Vector2f(window.getSize().x, i), sf::Color::White);
-		window.draw(lineY, 2, sf::Lines);
-		for (int j = 0; j < window.getSize().x; j += 50)
-		{
-			lineX[0] = sf::Vertex(sf::Vector2f(j, 0), sf::Color::White);
-			lineX[1] = sf::Vertex(sf::Vector2f(j, window.getSize().y), sf::Color::White);
-			window.draw(lineX, 2, sf::Lines);
-		}
-	}
+	//for (int i = 0; i < window.getSize().y; i += 50)
+	//{
+	//	lineY[0] = sf::Vertex(sf::Vector2f(0, i), sf::Color::White);
+	//	lineY[1] = sf::Vertex(sf::Vector2f(window.getSize().x, i), sf::Color::White);
+	//	window.draw(lineY, 2, sf::Lines);
+	//	for (int j = 0; j < window.getSize().x; j += 50)
+	//	{
+	//		lineX[0] = sf::Vertex(sf::Vector2f(j, 0), sf::Color::White);
+	//		lineX[1] = sf::Vertex(sf::Vector2f(j, window.getSize().y), sf::Color::White);
+	//		window.draw(lineX, 2, sf::Lines);
+	//	}
+	//}
 	window.display();
 }
 
