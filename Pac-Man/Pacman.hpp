@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include "Collision.hpp"
+#include "CollisionDetectionRect.hpp"
 
 class Pacman
 {
@@ -13,14 +14,15 @@ class Pacman
 		void Render(sf::RenderWindow& window);
 		void Update(sf::Time deltaTime, const std::vector<Collision*>& collisionRects);
 		void Animation(sf::Vector2f direction);
-		//bool isColliding;
+		bool isColliding;
 		bool directionChanged;
-		void CheckCollisionWithWall(const std::vector<Collision*>& collisionRects);
+		void CheckCollisionWithWallColored(const std::vector<Collision*>& collisionRects);
 		void ReactToCollision();
-		float SetVelocityX();
-		float SetVelocityY();
+		void SetSpeedX();
+		void SetSpeedY();
 
 	private:
+		std::vector<sf::Vector2f> inputs;
 		sf::Sprite pacman;
 		Collision* collisionRect;
 		sf::Vector2f velocity;
@@ -30,5 +32,7 @@ class Pacman
 		sf::Texture pacmanTexture;
 		sf::Clock clock;
 		int currentFrame;
+		std::vector<CollisionDetectionRect*> collisionDetectionRects;
+		std::vector<bool> collisionDetectionRectsColliding;
 };
 

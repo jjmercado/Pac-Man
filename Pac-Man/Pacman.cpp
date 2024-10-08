@@ -17,9 +17,21 @@ Pacman::Pacman() : currentFrame(0), directionChanged(false)
 	}
 
 	speedX = 100.0f;
-	speedY = 100.0f;
 	direction = sf::Vector2f(0, 0);
 	collisionRect = new Collision(pacman.getPosition() - sf::Vector2f(24.5, 24.5), 49, 49);
+
+	collisionDetectionRects.resize(4);
+	collisionDetectionRectsColliding.resize(4);
+
+	collisionDetectionRects[0] = new CollisionDetectionRect(pacman.getPosition() - sf::Vector2f(50, 0));
+	collisionDetectionRects[1] = new CollisionDetectionRect(pacman.getPosition() - sf::Vector2f(0, 50));
+	collisionDetectionRects[2] = new CollisionDetectionRect(pacman.getPosition() - sf::Vector2f(0, -50));
+	collisionDetectionRects[3] = new CollisionDetectionRect(pacman.getPosition() - sf::Vector2f(-50, 0));
+
+	for (auto& rect : collisionDetectionRects)
+	{
+		rect->SetColor(sf::Color::Blue);
+	}
 }
 
 Pacman::~Pacman()
@@ -28,28 +40,36 @@ Pacman::~Pacman()
 
 void Pacman::Events(sf::Event event)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !collisionDetectionRectsColliding[0])
 	{
 		direction = sf::Vector2f(-1, 0);
-		SetVelocityX();
+
+		speedX = 0.0f;
+		SetSpeedX();
 	}
 	
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && !collisionDetectionRectsColliding[3])
 	{
 		direction = sf::Vector2f(1, 0);
-		SetVelocityX();
+
+		speedX = 0.0f;
+		SetSpeedX();
 	}
 	
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !collisionDetectionRectsColliding[1])
 	{
 		direction = sf::Vector2f(0, -1);
-		SetVelocityY();
+
+		speedY = 0.0f;
+		SetSpeedY();
 	}
 	
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !collisionDetectionRectsColliding[2])
 	{
 		direction = sf::Vector2f(0, 1);
-		SetVelocityY();
+		
+		speedY = 0.0f;
+		SetSpeedY();
 	}
 }
 
@@ -57,13 +77,18 @@ void Pacman::Render(sf::RenderWindow& window)
 {
 	window.draw(pacman);
 	collisionRect->Render(window);
+
+	for (auto& rect : collisionDetectionRects)
+	{
+		rect->Render(window);
+	}
 }
 
 void Pacman::Update(sf::Time deltaTime, const std::vector<Collision*>& collisionRects)
 {
 	Animation(direction);
 
-	CheckCollisionWithWall(collisionRects);
+	CheckCollisionWithWallColored(collisionRects);
 
 	velocity.x = direction.x * speedX;
 	velocity.y = direction.y * speedY;
@@ -71,6 +96,23 @@ void Pacman::Update(sf::Time deltaTime, const std::vector<Collision*>& collision
 	velocity *= deltaTime.asSeconds();
 	pacman.move(velocity);
 	collisionRect->collision.move(velocity);
+
+	collisionDetectionRects[0]->Update(deltaTime, pacman.getPosition() - sf::Vector2f(50, 0));
+	collisionDetectionRects[1]->Update(deltaTime, pacman.getPosition() - sf::Vector2f(0, 50));
+	collisionDetectionRects[2]->Update(deltaTime, pacman.getPosition() - sf::Vector2f(0, -50));
+	collisionDetectionRects[3]->Update(deltaTime, pacman.getPosition() - sf::Vector2f(-50, 0));
+
+	for (int i = 0; i < collisionDetectionRects.size(); i++)
+	{
+		if (collisionDetectionRects[i]->CheckCollisionWithWallColored(collisionRects))
+		{
+			collisionDetectionRectsColliding[i] = true;
+		}
+		else
+		{
+			collisionDetectionRectsColliding[i] = false;
+		}
+	}
 }
 
 void Pacman::Animation(sf::Vector2f direction)
@@ -121,7 +163,7 @@ void Pacman::Animation(sf::Vector2f direction)
 	}
 }
 
-void Pacman::CheckCollisionWithWall(const std::vector<Collision*>& collisionRects)
+void Pacman::CheckCollisionWithWallColored(const std::vector<Collision*>& collisionRects)
 {
 	for (auto& wall : collisionRects)
 	{
@@ -131,7 +173,6 @@ void Pacman::CheckCollisionWithWall(const std::vector<Collision*>& collisionRect
 			collisionRect->collision.getGlobalBounds().top + velocity.y < wall->collision.getGlobalBounds().top + wall->collision.getGlobalBounds().height)
 		{
 			collisionRect->collision.setColor(sf::Color::White);
-
 			ReactToCollision();
 			break;
 		}
@@ -148,16 +189,12 @@ void Pacman::ReactToCollision()
 	speedY = 0.0f;
 }
 
-float Pacman::SetVelocityX()
+void Pacman::SetSpeedX()
 {
 	speedX = 100.0f;
-	velocity.y = 0;
-	return velocity.x;
 }
 
-float Pacman::SetVelocityY()
+void Pacman::SetSpeedY()
 {
 	speedY = 100.0f;
-	velocity.x = 0;
-	return velocity.y;
 }
