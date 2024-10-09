@@ -33,6 +33,10 @@ class Pacman
 		sf::Clock clock;
 		int currentFrame;
 		std::vector<CollisionDetectionRect*> collisionDetectionRects;
-		std::vector<bool> collisionDetectionRectsColliding;
+		std::vector<bool> isCollisionDetectionRectColliding;
+		sf::Vector2f nextDirectionLeft;
+		sf::Vector2f nextDirectionRight;
+		sf::Vector2f nextDirectionUp;
+		sf::Vector2f nextDirectionDown;
 };
 

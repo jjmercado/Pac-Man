@@ -1,12 +1,13 @@
 #include "CollisionDetectionRect.hpp"
 
-CollisionDetectionRect::CollisionDetectionRect(sf::Vector2f position)
+CollisionDetectionRect::CollisionDetectionRect(sf::Vector2f position, sf::Vector2f direction)
 {
 	image.create(49, 49, sf::Color::White);
 	texture.loadFromImage(image);
 	sprite.setOrigin(24.5, 24.5);
 	sprite.setTexture(texture);
 	sprite.setPosition(position);
+	this->direction = direction;
 }
 
 CollisionDetectionRect::~CollisionDetectionRect()

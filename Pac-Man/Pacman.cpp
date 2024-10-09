@@ -17,16 +17,16 @@ Pacman::Pacman() : currentFrame(0), directionChanged(false)
 	}
 
 	speedX = 100.0f;
-	direction = sf::Vector2f(0, 0);
+	direction = sf::Vector2f(-1, 0);
 	collisionRect = new Collision(pacman.getPosition() - sf::Vector2f(24.5, 24.5), 49, 49);
 
 	collisionDetectionRects.resize(4);
-	collisionDetectionRectsColliding.resize(4);
+	isCollisionDetectionRectColliding.resize(4);
 
-	collisionDetectionRects[0] = new CollisionDetectionRect(pacman.getPosition() - sf::Vector2f(50, 0));
-	collisionDetectionRects[1] = new CollisionDetectionRect(pacman.getPosition() - sf::Vector2f(0, 50));
-	collisionDetectionRects[2] = new CollisionDetectionRect(pacman.getPosition() - sf::Vector2f(0, -50));
-	collisionDetectionRects[3] = new CollisionDetectionRect(pacman.getPosition() - sf::Vector2f(-50, 0));
+	collisionDetectionRects[0] = new CollisionDetectionRect(pacman.getPosition() - sf::Vector2f(50, 0), sf::Vector2f(-1, 0));
+	collisionDetectionRects[1] = new CollisionDetectionRect(pacman.getPosition() - sf::Vector2f(0, 50), sf::Vector2f(0, -1));
+	collisionDetectionRects[2] = new CollisionDetectionRect(pacman.getPosition() - sf::Vector2f(0, -50), sf::Vector2f(0, 1));
+	collisionDetectionRects[3] = new CollisionDetectionRect(pacman.getPosition() - sf::Vector2f(-50, 0), sf::Vector2f(1, 0));
 
 	for (auto& rect : collisionDetectionRects)
 	{
@@ -40,36 +40,52 @@ Pacman::~Pacman()
 
 void Pacman::Events(sf::Event event)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !collisionDetectionRectsColliding[0])
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !isCollisionDetectionRectColliding[0])
 	{
 		direction = sf::Vector2f(-1, 0);
 
 		speedX = 0.0f;
 		SetSpeedX();
 	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && isCollisionDetectionRectColliding[0])
+	{
+		nextDirectionLeft = sf::Vector2f(-1, 0);
+	}
 	
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && !collisionDetectionRectsColliding[3])
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && !isCollisionDetectionRectColliding[3])
 	{
 		direction = sf::Vector2f(1, 0);
 
 		speedX = 0.0f;
 		SetSpeedX();
 	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && isCollisionDetectionRectColliding[3])
+	{
+		nextDirectionRight = sf::Vector2f(1, 0);
+	}
 	
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !collisionDetectionRectsColliding[1])
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !isCollisionDetectionRectColliding[1])
 	{
 		direction = sf::Vector2f(0, -1);
 
 		speedY = 0.0f;
 		SetSpeedY();
 	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && isCollisionDetectionRectColliding[1])
+	{
+		nextDirectionUp = sf::Vector2f(0, -1);
+	}
 	
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !collisionDetectionRectsColliding[2])
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !isCollisionDetectionRectColliding[2])
 	{
 		direction = sf::Vector2f(0, 1);
 		
 		speedY = 0.0f;
 		SetSpeedY();
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && isCollisionDetectionRectColliding[2])
+	{
+		nextDirectionDown = sf::Vector2f(0, 1);
 	}
 }
 
@@ -88,8 +104,6 @@ void Pacman::Update(sf::Time deltaTime, const std::vector<Collision*>& collision
 {
 	Animation(direction);
 
-	CheckCollisionWithWallColored(collisionRects);
-
 	velocity.x = direction.x * speedX;
 	velocity.y = direction.y * speedY;
 
@@ -106,13 +120,50 @@ void Pacman::Update(sf::Time deltaTime, const std::vector<Collision*>& collision
 	{
 		if (collisionDetectionRects[i]->CheckCollisionWithWallColored(collisionRects))
 		{
-			collisionDetectionRectsColliding[i] = true;
+			isCollisionDetectionRectColliding[i] = true;
 		}
 		else
 		{
-			collisionDetectionRectsColliding[i] = false;
+			isCollisionDetectionRectColliding[i] = false;
 		}
 	}
+
+	if (!isCollisionDetectionRectColliding[0] && nextDirectionLeft != sf::Vector2f(0, 0))
+	{
+		direction = nextDirectionLeft;
+		SetSpeedX();
+		nextDirectionLeft = sf::Vector2f(0, 0);
+	}
+	
+	if (!isCollisionDetectionRectColliding[1] && nextDirectionUp != sf::Vector2f(0,0))
+	{
+		direction = nextDirectionUp;
+		SetSpeedY();
+		nextDirectionUp = sf::Vector2f(0, 0);
+	}
+	
+	if (!isCollisionDetectionRectColliding[2] && nextDirectionDown != sf::Vector2f(0, 0))
+	{
+		direction = nextDirectionDown;
+		SetSpeedY();
+		nextDirectionDown = sf::Vector2f(0, 0);
+	}
+	
+	if (!isCollisionDetectionRectColliding[3] && nextDirectionRight != sf::Vector2f(0, 0))
+	{
+		direction = nextDirectionRight;
+		SetSpeedX();
+		nextDirectionRight = sf::Vector2f(0, 0);
+	}
+	
+	if(direction == collisionDetectionRects[0]->direction && nextDirectionLeft == sf::Vector2f(0, 0) && isCollisionDetectionRectColliding[0])
+		CheckCollisionWithWallColored(collisionRects);
+	else if (direction == collisionDetectionRects[3]->direction && nextDirectionRight == sf::Vector2f(0, 0) && isCollisionDetectionRectColliding[3])
+		CheckCollisionWithWallColored(collisionRects);
+	else if (direction == collisionDetectionRects[1]->direction && nextDirectionUp == sf::Vector2f(0, 0) && isCollisionDetectionRectColliding[1])
+		CheckCollisionWithWallColored(collisionRects);
+	else if (direction == collisionDetectionRects[2]->direction && nextDirectionDown == sf::Vector2f(0, 0) && isCollisionDetectionRectColliding[2])
+		CheckCollisionWithWallColored(collisionRects);
 }
 
 void Pacman::Animation(sf::Vector2f direction)
@@ -122,6 +173,7 @@ void Pacman::Animation(sf::Vector2f direction)
 	sf::Time lastUpdateTime = sf::Time::Zero; // Zeit des letzten Frame-Wechsels
 
 	std::vector<sf::IntRect> pacmanFrames;
+
 	pacmanFrames.push_back(sf::IntRect(0, 0, 50, 50));
 	pacmanFrames.push_back(sf::IntRect(50, 0, 50, 50));
 	pacmanFrames.push_back(sf::IntRect(100, 0, 50, 50));

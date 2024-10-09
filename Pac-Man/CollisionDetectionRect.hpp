@@ -6,12 +6,13 @@
 class CollisionDetectionRect
 {
 	public:
-		CollisionDetectionRect(sf::Vector2f position);
+		CollisionDetectionRect(sf::Vector2f position, sf::Vector2f direction);
 		~CollisionDetectionRect();
 		void Update(sf::Time deltaTime, sf::Vector2f position);
 		void Render(sf::RenderWindow& window);
 		void SetColor(sf::Color color);
 		bool CheckCollisionWithWallColored(const std::vector<Collision*>& collisionRects);
+		sf::Vector2f direction;
 
 	private:
 		sf::Image image;
