@@ -23,10 +23,10 @@ Pacman::Pacman() : currentFrame(0), directionChanged(false)
 	collisionDetectionRects.resize(4);
 	isCollisionDetectionRectColliding.resize(4);
 
-	collisionDetectionRects[0] = new CollisionDetectionRect(pacman.getPosition() - sf::Vector2f(50, 0), sf::Vector2f(-1, 0));
-	collisionDetectionRects[1] = new CollisionDetectionRect(pacman.getPosition() - sf::Vector2f(0, 50), sf::Vector2f(0, -1));
-	collisionDetectionRects[2] = new CollisionDetectionRect(pacman.getPosition() - sf::Vector2f(0, -50), sf::Vector2f(0, 1));
-	collisionDetectionRects[3] = new CollisionDetectionRect(pacman.getPosition() - sf::Vector2f(-50, 0), sf::Vector2f(1, 0));
+	collisionDetectionRects[0] = new CollisionDetectionRect(pacman.getPosition() + sf::Vector2f(50, 0), sf::Vector2f(-1, 0));
+	collisionDetectionRects[1] = new CollisionDetectionRect(pacman.getPosition() + sf::Vector2f(0, 50), sf::Vector2f(0, -1));
+	collisionDetectionRects[2] = new CollisionDetectionRect(pacman.getPosition() + sf::Vector2f(0, -50), sf::Vector2f(0, 1));
+	collisionDetectionRects[3] = new CollisionDetectionRect(pacman.getPosition() + sf::Vector2f(-50, 0), sf::Vector2f(1, 0));
 
 	for (auto& rect : collisionDetectionRects)
 	{

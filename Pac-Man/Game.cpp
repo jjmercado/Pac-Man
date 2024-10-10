@@ -1,10 +1,10 @@
 #include "Game.hpp"
 
 Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(), 
-				redGhost(sf::Color::Red, sf::Vector2f(350,400)), 
-				pinkGhost(sf::Color::Magenta, sf::Vector2f(300, 450)),
-				orangeGhost(sf::Color(255, 165, 0), sf::Vector2f(350, 450)),
-				turquoiseGhost(sf::Color::Cyan, sf::Vector2f(400, 450)),
+				redGhost(sf::Color::Red, sf::Vector2f(350,350), 2.0f), 
+				pinkGhost(sf::Color::Magenta, sf::Vector2f(300, 450), 5.0f),
+				orangeGhost(sf::Color(255, 165, 0), sf::Vector2f(350, 450), 5.0f),
+				turquoiseGhost(sf::Color::Cyan, sf::Vector2f(400, 450), 5.0f),
 				pacman()
 {
 	if (!backgroundTexture.loadFromFile("..\\Background.png"))
@@ -61,6 +61,74 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 	{
 		rect->SetColor(sf::Color::Red);
 	}
+
+	//signposts
+	signposts.resize(10);
+
+	//left left side from top down
+	signposts[0] = new Signpost(sf::Vector2f(50, 150));
+	signposts[1] = new Signpost(sf::Vector2f(50, 300));
+	signposts[2] = new Signpost(sf::Vector2f(50, 450));
+	signposts[3] = new Signpost(sf::Vector2f(50, 600));
+	signposts[4] = new Signpost(sf::Vector2f(50, 750));
+
+	//left middle side from top down
+	signposts[5] = new Signpost(sf::Vector2f(200, 150));
+	signposts[6] = new Signpost(sf::Vector2f(200, 300));
+	signposts[7] = new Signpost(sf::Vector2f(200, 450));
+	signposts[8] = new Signpost(sf::Vector2f(200, 600));
+	signposts[9] = new Signpost(sf::Vector2f(200, 750));
+
+	for (auto& signpost : signposts)
+	{
+		signpost->SetColor(sf::Color::Green);
+	}
+
+	//signposts directions
+	signposts[0]->SetDirection(Direction::Right);
+	signposts[0]->SetDirection(Direction::Down);
+
+	signposts[1]->SetDirection(Direction::Up);
+	signposts[1]->SetDirection(Direction::Right);
+	signposts[1]->SetDirection(Direction::Down);
+
+	signposts[2]->SetDirection(Direction::Up);
+	signposts[2]->SetDirection(Direction::Right);
+	signposts[2]->SetDirection(Direction::Down);
+	signposts[2]->SetDirection(Direction::Left);
+
+	signposts[3]->SetDirection(Direction::Up);
+	signposts[3]->SetDirection(Direction::Right);
+	signposts[3]->SetDirection(Direction::Down);
+
+	signposts[4]->SetDirection(Direction::Up);
+	signposts[4]->SetDirection(Direction::Right);
+
+	signposts[5]->SetDirection(Direction::Left);
+	signposts[5]->SetDirection(Direction::Right);
+	signposts[5]->SetDirection(Direction::Down);
+
+	signposts[6]->SetDirection(Direction::Up);
+	signposts[6]->SetDirection(Direction::Left);
+	signposts[6]->SetDirection(Direction::Down);
+
+	signposts[7]->SetDirection(Direction::Up);
+	signposts[7]->SetDirection(Direction::Down);
+	signposts[7]->SetDirection(Direction::Left);
+
+	signposts[8]->SetDirection(Direction::Up);
+	signposts[8]->SetDirection(Direction::Left);
+	signposts[8]->SetDirection(Direction::Down);
+
+	signposts[9]->SetDirection(Direction::Up);
+	signposts[9]->SetDirection(Direction::Right);
+	signposts[9]->SetDirection(Direction::Left);
+
+	//init signposts rnd direction necessary for the size of the array
+	for (auto& signpost : signposts)
+	{
+		signpost->GenerateRandomNumber();
+	}
 }
 
 Game::~Game()
@@ -114,34 +182,45 @@ void Game::Events(sf::RenderWindow& window)
 void Game::Update(sf::Time deltaTime)
 {
 	pacman.Update(deltaTime, collisionRects);
+	redGhost.Update(deltaTime, collisionRects);
+
+	for (auto& signpost : signposts)
+	{
+		signpost->Update(deltaTime, redGhost);
+	}
 }
 
 void Game::Render(sf::RenderWindow& window)
 {
 	window.clear();
 	window.draw(background);
-	redGhost.Render(window);
-	pinkGhost.Render(window);
-	orangeGhost.Render(window);
-	turquoiseGhost.Render(window);
+	//pinkGhost.Render(window);
+	//orangeGhost.Render(window);
+	//turquoiseGhost.Render(window);
 	for(auto& rect : collisionRects)
 	{
 		rect->Render(window);
 	}
+	redGhost.Render(window);
 	pacman.Render(window);
 
-	//for (int i = 0; i < window.getSize().y; i += 50)
-	//{
-	//	lineY[0] = sf::Vertex(sf::Vector2f(0, i), sf::Color::White);
-	//	lineY[1] = sf::Vertex(sf::Vector2f(window.getSize().x, i), sf::Color::White);
-	//	window.draw(lineY, 2, sf::Lines);
-	//	for (int j = 0; j < window.getSize().x; j += 50)
-	//	{
-	//		lineX[0] = sf::Vertex(sf::Vector2f(j, 0), sf::Color::White);
-	//		lineX[1] = sf::Vertex(sf::Vector2f(j, window.getSize().y), sf::Color::White);
-	//		window.draw(lineX, 2, sf::Lines);
-	//	}
-	//}
+	for (auto& signpost : signposts)
+	{
+		signpost->Render(window);
+	}
+
+	for (int i = 0; i < window.getSize().y; i += 50)
+	{
+		lineY[0] = sf::Vertex(sf::Vector2f(0, i), sf::Color::White);
+		lineY[1] = sf::Vertex(sf::Vector2f(window.getSize().x, i), sf::Color::White);
+		window.draw(lineY, 2, sf::Lines);
+		for (int j = 0; j < window.getSize().x; j += 50)
+		{
+			lineX[0] = sf::Vertex(sf::Vector2f(j, 0), sf::Color::White);
+			lineX[1] = sf::Vertex(sf::Vector2f(j, window.getSize().y), sf::Color::White);
+			window.draw(lineX, 2, sf::Lines);
+		}
+	}
 	window.display();
 }
 

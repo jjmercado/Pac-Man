@@ -1,6 +1,11 @@
 #include "Ghost.hpp"
 
-Ghost::Ghost(sf::Color color, sf::Vector2f startPos) : currentFrame(0)
+// TODOS 
+// - Implement Collision Detection Rects for Ghosts
+// - Implement Ghost Movement
+// - Implement different start times for Ghosts
+
+Ghost::Ghost(sf::Color color, sf::Vector2f startPos, float startTime) : currentFrame(0), startTime(startTime)
 {
 	if (!ghostTexture.loadFromFile("..\\Ghost.png"))
 	{
@@ -33,6 +38,10 @@ Ghost::Ghost(sf::Color color, sf::Vector2f startPos) : currentFrame(0)
 		pupils.setTexture(pupilsTexture);
 		pupils.setPosition(eyesBackground.getPosition());
 	}
+
+	speedX = 100.0f;
+	speedY = 100.0f;
+	direction = sf::Vector2f(-1, 0);
 }
 
 Ghost::~Ghost()
@@ -46,9 +55,28 @@ void Ghost::Render(sf::RenderWindow& window)
 	window.draw(pupils);
 }
 
+void Ghost::Update(sf::Time deltaTime, const std::vector<Collision*>& collisionRects)
+{
+	// timer zählt runter
+	// wenn timer abgelaufen, bewege ghost
+	// wenn ghost an wand stößt, bewege ghost in andere richtung
+	if (SetStartTime(startTime))
+	{
+		velocity.x = direction.x * speedX;
+		velocity.y = direction.y * speedY;
+
+		velocity *= deltaTime.asSeconds();
+		ghost.move(velocity);
+		eyesBackground.move(velocity);
+		pupils.move(velocity);
+
+		Animation();
+	}
+}
+
 void Ghost::Animation()
 {
-	sf::Time time = clock.getElapsedTime();
+	sf::Time time = animationClock.getElapsedTime();
 	float delay = 0.1f; // Zeit in Sekunden zwischen den Frames
 	sf::Time lastUpdateTime = sf::Time::Zero; // Zeit des letzten Frame-Wechsels
 
@@ -62,6 +90,31 @@ void Ghost::Animation()
 		currentFrame = (currentFrame + 1) % ghostFrames.size(); // Nächster Frame
 		ghost.setTextureRect(ghostFrames[currentFrame]);
 		lastUpdateTime = time; // Timer zurücksetzen
-		clock.restart();
+		animationClock.restart();
 	}
+}
+
+void Ghost::SetDirection(sf::Vector2f direction)
+{
+	this->direction = direction;
+}
+
+sf::Sprite Ghost::GetSprite()
+{
+	return ghost;
+}
+
+bool Ghost::SetStartTime(float startTime)
+{
+	// Setzt die Startzeit für den Ghost
+	// startTime = 0 -> Ghost bewegt sich sofort
+	// startTime = 5 -> Ghost bewegt sich nach 5 Sekunden
+	// startTime = 10 -> Ghost bewegt sich nach 10 Sekunden
+	// usw.
+	sf::Time time = startClock.getElapsedTime();
+	if (time.asSeconds() >= startTime)
+	{
+		return true;
+	}
+	return false;
 }

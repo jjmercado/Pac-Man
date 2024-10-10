@@ -6,6 +6,8 @@
 #include "Ghost.hpp"
 #include "Pacman.hpp"
 #include "Collision.hpp"
+#include "Signpost.hpp"
+#include "Direction.hpp"
 
 class Game
 {
@@ -29,6 +31,7 @@ private:
 	Ghost turquoiseGhost;
 	Pacman pacman;
 	std::vector<Collision*> collisionRects;
+	std::vector<Signpost*> signposts;
 	sf::Vertex lineY[2];
 	sf::Vertex lineX[2];
 };
