@@ -5,7 +5,7 @@
 // - Implement Ghost Movement
 // - Implement different start times for Ghosts
 
-Ghost::Ghost(sf::Color color, sf::Vector2f startPos, float startTime) : currentFrame(0), startTime(startTime)
+Ghost::Ghost(sf::Color color, sf::Vector2f startPos, float startTime, sf::Vector2f startDirection) : currentFrame(0), startTime(startTime)
 {
 	if (!ghostTexture.loadFromFile("..\\Ghost.png"))
 	{
@@ -41,7 +41,7 @@ Ghost::Ghost(sf::Color color, sf::Vector2f startPos, float startTime) : currentF
 
 	speedX = 100.0f;
 	speedY = 100.0f;
-	direction = sf::Vector2f(-1, 0);
+	direction = startDirection;
 }
 
 Ghost::~Ghost()

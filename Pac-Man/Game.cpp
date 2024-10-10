@@ -1,10 +1,10 @@
 #include "Game.hpp"
 
 Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(), 
-				redGhost(sf::Color::Red, sf::Vector2f(350,350), 2.0f), 
-				pinkGhost(sf::Color::Magenta, sf::Vector2f(300, 450), 5.0f),
-				orangeGhost(sf::Color(255, 165, 0), sf::Vector2f(350, 450), 5.0f),
-				turquoiseGhost(sf::Color::Cyan, sf::Vector2f(400, 450), 5.0f),
+				redGhost(sf::Color::Red, sf::Vector2f(350,350), 2.0f, Direction::Left), 
+				pinkGhost(sf::Color::Magenta, sf::Vector2f(300, 450), 5.0f, Direction::Right),
+				orangeGhost(sf::Color(255, 165, 0), sf::Vector2f(350, 450), 10.0f, Direction::Up),
+				turquoiseGhost(sf::Color::Cyan, sf::Vector2f(400, 450), 15.0f, Direction::Left),
 				pacman()
 {
 	if (!backgroundTexture.loadFromFile("..\\Background.png"))
@@ -63,8 +63,9 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 	}
 
 	//signposts
-	signposts.resize(10);
+	signposts.resize(36);
 
+	//left half of game map
 	//left left side from top down
 	signposts[0] = new Signpost(sf::Vector2f(50, 150));
 	signposts[1] = new Signpost(sf::Vector2f(50, 300));
@@ -75,13 +76,50 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 	//left middle side from top down
 	signposts[5] = new Signpost(sf::Vector2f(200, 150));
 	signposts[6] = new Signpost(sf::Vector2f(200, 300));
-	signposts[7] = new Signpost(sf::Vector2f(200, 450));
-	signposts[8] = new Signpost(sf::Vector2f(200, 600));
-	signposts[9] = new Signpost(sf::Vector2f(200, 750));
+	signposts[7] = new Signpost(sf::Vector2f(200, 350));
+	signposts[8] = new Signpost(sf::Vector2f(200, 450));
+	signposts[9] = new Signpost(sf::Vector2f(200, 550));
+	signposts[10] = new Signpost(sf::Vector2f(200, 600));
+	signposts[11] = new Signpost(sf::Vector2f(200, 650));
+	signposts[12] = new Signpost(sf::Vector2f(200, 750));
+
+	//left right side from top down
+	signposts[13] = new Signpost(sf::Vector2f(300, 150));
+	signposts[14] = new Signpost(sf::Vector2f(300, 350));
+	signposts[15] = new Signpost(sf::Vector2f(300, 650));
+	signposts[16] = new Signpost(sf::Vector2f(300, 750));
+
+	//right half side of game map
+	//right left side of game map
+	signposts[17] = new Signpost(sf::Vector2f(400, 150));
+	signposts[18] = new Signpost(sf::Vector2f(400, 350));
+	signposts[19] = new Signpost(sf::Vector2f(400, 650));
+	signposts[20] = new Signpost(sf::Vector2f(400, 750));
+
+	//right middle side of game map
+	signposts[21] = new Signpost(sf::Vector2f(500, 150));
+	signposts[22] = new Signpost(sf::Vector2f(500, 300));
+	signposts[23] = new Signpost(sf::Vector2f(500, 350));
+	signposts[24] = new Signpost(sf::Vector2f(500, 450));
+	signposts[25] = new Signpost(sf::Vector2f(500, 550));
+	signposts[26] = new Signpost(sf::Vector2f(500, 600));
+	signposts[27] = new Signpost(sf::Vector2f(500, 650));
+	signposts[28] = new Signpost(sf::Vector2f(500, 750));
+
+	//right right side of game map
+	signposts[29] = new Signpost(sf::Vector2f(650, 150));
+	signposts[30] = new Signpost(sf::Vector2f(650, 300));
+	signposts[31] = new Signpost(sf::Vector2f(650, 450));
+	signposts[32] = new Signpost(sf::Vector2f(650, 600));
+	signposts[33] = new Signpost(sf::Vector2f(650, 750));
+
+	//ghost start section in the middle
+	signposts[34] = new Signpost(sf::Vector2f(350, 350));
+	signposts[35] = new Signpost(sf::Vector2f(350, 450));
 
 	for (auto& signpost : signposts)
 	{
-		signpost->SetColor(sf::Color::Green);
+		signpost->SetColor(sf::Color::Transparent);
 	}
 
 	//signposts directions
@@ -114,15 +152,111 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 
 	signposts[7]->SetDirection(Direction::Up);
 	signposts[7]->SetDirection(Direction::Down);
-	signposts[7]->SetDirection(Direction::Left);
+	signposts[7]->SetDirection(Direction::Right);
 
 	signposts[8]->SetDirection(Direction::Up);
-	signposts[8]->SetDirection(Direction::Left);
 	signposts[8]->SetDirection(Direction::Down);
+	signposts[8]->SetDirection(Direction::Left);
 
 	signposts[9]->SetDirection(Direction::Up);
 	signposts[9]->SetDirection(Direction::Right);
-	signposts[9]->SetDirection(Direction::Left);
+	signposts[9]->SetDirection(Direction::Down);
+
+	signposts[10]->SetDirection(Direction::Up);
+	signposts[10]->SetDirection(Direction::Left);
+	signposts[10]->SetDirection(Direction::Down);
+
+	signposts[11]->SetDirection(Direction::Up);
+	signposts[11]->SetDirection(Direction::Right);
+	signposts[11]->SetDirection(Direction::Down);
+
+	signposts[12]->SetDirection(Direction::Up);
+	signposts[12]->SetDirection(Direction::Right);
+	signposts[12]->SetDirection(Direction::Left);
+
+	signposts[13]->SetDirection(Direction::Left);
+	signposts[13]->SetDirection(Direction::Down);
+
+	signposts[14]->SetDirection(Direction::Up);
+	signposts[14]->SetDirection(Direction::Right);
+	signposts[14]->SetDirection(Direction::Left);
+
+	signposts[15]->SetDirection(Direction::Down);
+	signposts[15]->SetDirection(Direction::Left);
+
+	signposts[16]->SetDirection(Direction::Up);
+	signposts[16]->SetDirection(Direction::Right);
+	signposts[16]->SetDirection(Direction::Left);
+
+	signposts[17]->SetDirection(Direction::Right);
+	signposts[17]->SetDirection(Direction::Down);
+
+	signposts[18]->SetDirection(Direction::Up);
+	signposts[18]->SetDirection(Direction::Right);
+	signposts[18]->SetDirection(Direction::Left);
+
+	signposts[19]->SetDirection(Direction::Down);
+	signposts[19]->SetDirection(Direction::Right);
+
+	signposts[20]->SetDirection(Direction::Up);
+	signposts[20]->SetDirection(Direction::Right);
+	signposts[20]->SetDirection(Direction::Left);
+
+	signposts[21]->SetDirection(Direction::Left);
+	signposts[21]->SetDirection(Direction::Right);
+	signposts[21]->SetDirection(Direction::Down);
+
+	signposts[22]->SetDirection(Direction::Up);
+	signposts[22]->SetDirection(Direction::Right);
+	signposts[22]->SetDirection(Direction::Down);
+
+	signposts[23]->SetDirection(Direction::Up);
+	signposts[23]->SetDirection(Direction::Down);
+	signposts[23]->SetDirection(Direction::Left);
+
+	signposts[24]->SetDirection(Direction::Up);
+	signposts[24]->SetDirection(Direction::Down);
+	signposts[24]->SetDirection(Direction::Right);
+
+	signposts[25]->SetDirection(Direction::Up);
+	signposts[25]->SetDirection(Direction::Left);
+	signposts[25]->SetDirection(Direction::Down);
+
+	signposts[26]->SetDirection(Direction::Up);
+	signposts[26]->SetDirection(Direction::Right);
+	signposts[26]->SetDirection(Direction::Down);
+
+	signposts[27]->SetDirection(Direction::Up);
+	signposts[27]->SetDirection(Direction::Left);
+	signposts[27]->SetDirection(Direction::Down);
+
+	signposts[28]->SetDirection(Direction::Up);
+	signposts[28]->SetDirection(Direction::Right);
+	signposts[28]->SetDirection(Direction::Left);
+
+	signposts[29]->SetDirection(Direction::Left);
+	signposts[29]->SetDirection(Direction::Down);
+
+	signposts[30]->SetDirection(Direction::Up);
+	signposts[30]->SetDirection(Direction::Left);
+	signposts[30]->SetDirection(Direction::Down);
+
+	signposts[31]->SetDirection(Direction::Up);
+	signposts[31]->SetDirection(Direction::Right);
+	signposts[31]->SetDirection(Direction::Down);
+	signposts[31]->SetDirection(Direction::Left);
+
+	signposts[32]->SetDirection(Direction::Up);
+	signposts[32]->SetDirection(Direction::Left);
+	signposts[32]->SetDirection(Direction::Down);
+
+	signposts[33]->SetDirection(Direction::Up);
+	signposts[33]->SetDirection(Direction::Left);
+
+	signposts[34]->SetDirection(Direction::Right);
+	signposts[34]->SetDirection(Direction::Left);
+
+	signposts[35]->SetDirection(Direction::Up);
 
 	//init signposts rnd direction necessary for the size of the array
 	for (auto& signpost : signposts)
@@ -183,10 +317,16 @@ void Game::Update(sf::Time deltaTime)
 {
 	pacman.Update(deltaTime, collisionRects);
 	redGhost.Update(deltaTime, collisionRects);
+	pinkGhost.Update(deltaTime, collisionRects);
+	orangeGhost.Update(deltaTime, collisionRects);
+	turquoiseGhost.Update(deltaTime, collisionRects);
 
 	for (auto& signpost : signposts)
 	{
 		signpost->Update(deltaTime, redGhost);
+		signpost->Update(deltaTime, pinkGhost);
+		signpost->Update(deltaTime, orangeGhost);
+		signpost->Update(deltaTime, turquoiseGhost);
 	}
 }
 
@@ -194,9 +334,9 @@ void Game::Render(sf::RenderWindow& window)
 {
 	window.clear();
 	window.draw(background);
-	//pinkGhost.Render(window);
-	//orangeGhost.Render(window);
-	//turquoiseGhost.Render(window);
+	pinkGhost.Render(window);
+	orangeGhost.Render(window);
+	turquoiseGhost.Render(window);
 	for(auto& rect : collisionRects)
 	{
 		rect->Render(window);
