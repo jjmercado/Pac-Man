@@ -1,10 +1,10 @@
 #include "Game.hpp"
 
 Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(), 
-				redGhost(sf::Color::Red, sf::Vector2f(350,350), 2.0f, Direction::Left), 
-				pinkGhost(sf::Color::Magenta, sf::Vector2f(300, 450), 5.0f, Direction::Right),
-				orangeGhost(sf::Color(255, 165, 0), sf::Vector2f(350, 450), 10.0f, Direction::Up),
-				turquoiseGhost(sf::Color::Cyan, sf::Vector2f(400, 450), 15.0f, Direction::Left),
+				redGhost(sf::Color::Red, sf::Vector2f(350,350), 5.0f, Direction::Left), 
+				pinkGhost(sf::Color::Magenta, sf::Vector2f(300, 450), 10.0f, Direction::Right),
+				orangeGhost(sf::Color(255, 165, 0), sf::Vector2f(350, 450), 15.0f, Direction::Up),
+				turquoiseGhost(sf::Color::Cyan, sf::Vector2f(400, 450), 20.0f, Direction::Left),
 				pacman()
 {
 	if (!backgroundTexture.loadFromFile("..\\Background.png"))
@@ -349,18 +349,18 @@ void Game::Render(sf::RenderWindow& window)
 		signpost->Render(window);
 	}
 
-	for (int i = 0; i < window.getSize().y; i += 50)
-	{
-		lineY[0] = sf::Vertex(sf::Vector2f(0, i), sf::Color::White);
-		lineY[1] = sf::Vertex(sf::Vector2f(window.getSize().x, i), sf::Color::White);
-		window.draw(lineY, 2, sf::Lines);
-		for (int j = 0; j < window.getSize().x; j += 50)
-		{
-			lineX[0] = sf::Vertex(sf::Vector2f(j, 0), sf::Color::White);
-			lineX[1] = sf::Vertex(sf::Vector2f(j, window.getSize().y), sf::Color::White);
-			window.draw(lineX, 2, sf::Lines);
-		}
-	}
+	//for (int i = 0; i < window.getSize().y; i += 50)
+	//{
+	//	lineY[0] = sf::Vertex(sf::Vector2f(0, i), sf::Color::White);
+	//	lineY[1] = sf::Vertex(sf::Vector2f(window.getSize().x, i), sf::Color::White);
+	//	window.draw(lineY, 2, sf::Lines);
+	//	for (int j = 0; j < window.getSize().x; j += 50)
+	//	{
+	//		lineX[0] = sf::Vertex(sf::Vector2f(j, 0), sf::Color::White);
+	//		lineX[1] = sf::Vertex(sf::Vector2f(j, window.getSize().y), sf::Color::White);
+	//		window.draw(lineX, 2, sf::Lines);
+	//	}
+	//}
 	window.display();
 }
 
