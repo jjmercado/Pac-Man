@@ -34,6 +34,7 @@ class Pacman
 		int currentFrame;
 		std::vector<CollisionDetectionRect*> collisionDetectionRects;
 		std::vector<bool> isCollisionDetectionRectColliding;
+		void OutOfBounds();
 		sf::Vector2f nextDirectionLeft;
 		sf::Vector2f nextDirectionRight;
 		sf::Vector2f nextDirectionUp;

@@ -71,6 +71,7 @@ void Ghost::Update(sf::Time deltaTime, const std::vector<Collision*>& collisionR
 		pupils.move(velocity);
 
 		Animation();
+		OutOfBounds();
 	}
 }
 
@@ -117,4 +118,20 @@ bool Ghost::SetStartTime(float startTime)
 		return true;
 	}
 	return false;
+}
+
+void Ghost::OutOfBounds()
+{
+	if (ghost.getPosition().x < 0 && eyesBackground.getPosition().x < 0 && pupils.getPosition().x < 0)
+	{
+		ghost.setPosition(800, ghost.getPosition().y);
+		eyesBackground.setPosition(815, eyesBackground.getPosition().y);
+		pupils.setPosition(815, pupils.getPosition().y);
+	}
+	else if (ghost.getPosition().x > 800 && eyesBackground.getPosition().x > 800 && pupils.getPosition().x > 800)
+	{
+		ghost.setPosition(0, ghost.getPosition().y);
+		eyesBackground.setPosition(15, eyesBackground.getPosition().y);
+		pupils.setPosition(15, pupils.getPosition().y);
+	}
 }

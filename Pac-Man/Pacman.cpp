@@ -103,6 +103,7 @@ void Pacman::Render(sf::RenderWindow& window)
 void Pacman::Update(sf::Time deltaTime, const std::vector<Collision*>& collisionRects)
 {
 	Animation(direction);
+	OutOfBounds();
 
 	velocity.x = direction.x * speedX;
 	velocity.y = direction.y * speedY;
@@ -249,4 +250,16 @@ void Pacman::SetSpeedX()
 void Pacman::SetSpeedY()
 {
 	speedY = 100.0f;
+}
+
+void Pacman::OutOfBounds()
+{
+	if (pacman.getPosition().x < 0)
+	{
+		pacman.setPosition(800, pacman.getPosition().y);
+	}
+	else if (pacman.getPosition().x > 800)
+	{
+		pacman.setPosition(0, pacman.getPosition().y);
+	}
 }

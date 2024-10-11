@@ -31,6 +31,6 @@ class Ghost
 		sf::Vector2f direction;
 		int currentFrame;
 		bool SetStartTime(float startTime);
-
+		void OutOfBounds();
 };
 
