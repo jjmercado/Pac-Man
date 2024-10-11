@@ -92,12 +92,12 @@ void Pacman::Events(sf::Event event)
 void Pacman::Render(sf::RenderWindow& window)
 {
 	window.draw(pacman);
-	collisionRect->Render(window);
+	//collisionRect->Render(window);
 
-	for (auto& rect : collisionDetectionRects)
-	{
-		rect->Render(window);
-	}
+	//for (auto& rect : collisionDetectionRects)
+	//{
+	//	rect->Render(window);
+	//}
 }
 
 void Pacman::Update(sf::Time deltaTime, const std::vector<Collision*>& collisionRects)

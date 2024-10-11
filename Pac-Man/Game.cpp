@@ -31,7 +31,7 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 
 	for (auto& signpost : signposts)
 	{
-		signpost->SetColor(sf::Color::Transparent);
+		signpost->SetColor(sf::Color::Green);
 	}
 
 	InitSignpostDirections();
@@ -120,17 +120,17 @@ void Game::Render(sf::RenderWindow& window)
 	pinkGhost.Render(window);
 	orangeGhost.Render(window);
 	turquoiseGhost.Render(window);
-	for(auto& rect : collisionRects)
-	{
-		rect->Render(window);
-	}
+	//for(auto& rect : collisionRects)
+	//{
+	//	rect->Render(window);
+	//}
 	redGhost.Render(window);
 	pacman.Render(window);
 
-	for (auto& signpost : signposts)
-	{
-		signpost->Render(window);
-	}
+	//for (auto& signpost : signposts)
+	//{
+	//	signpost->Render(window);
+	//}
 
 	//for (int i = 0; i < window.getSize().y; i += 50)
 	//{
