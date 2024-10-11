@@ -45,3 +45,8 @@ bool CollisionDetectionRect::CheckCollisionWithWallColored(const std::vector<Col
 	}
 	return false;
 }
+
+void CollisionDetectionRect::SetPosition(sf::Vector2f position)
+{
+	sprite.setPosition(position);
+}

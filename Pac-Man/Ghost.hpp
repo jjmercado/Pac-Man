@@ -13,6 +13,7 @@ class Ghost
 		void Animation();
 		void SetDirection(sf::Vector2f direction);
 		sf::Sprite GetSprite();
+		void Reset(sf::Vector2f ghostPos, sf::Vector2f direction);
 
 	private:
 		sf::Texture ghostTexture;

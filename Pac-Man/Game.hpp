@@ -34,5 +34,8 @@ private:
 	std::vector<Signpost*> signposts;
 	sf::Vertex lineY[2];
 	sf::Vertex lineX[2];
+	void InitCollisionRects();
+	void InitSignposts();
+	void InitSignpostDirections();
 };
 

@@ -17,6 +17,147 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 		background.setPosition(0, 100);
 	}
 
+	InitCollisionRects();
+
+	for (auto& rect : collisionRects)
+	{
+		rect->SetColor(sf::Color::Red);
+	}
+
+	//signposts
+	signposts.resize(36);
+
+	InitSignposts();
+
+	for (auto& signpost : signposts)
+	{
+		signpost->SetColor(sf::Color::Transparent);
+	}
+
+	InitSignpostDirections();
+
+	//init signposts rnd direction necessary for the size of the array
+	for (auto& signpost : signposts)
+	{
+		signpost->GenerateRandomNumber();
+	}
+}
+
+Game::~Game()
+{
+}
+
+void Game::Run(sf::RenderWindow& window)
+{
+	sf::Clock clock;
+	sf::Time timeSinceLastUpdate = sf::Time::Zero;
+	sf::Time TimePerFrame = sf::seconds(1.f / 60.f);
+
+	while (window.isOpen())
+	{
+		sf::Time deltaTime = clock.restart();
+		timeSinceLastUpdate += deltaTime;
+
+		while (timeSinceLastUpdate > TimePerFrame)
+		{
+			timeSinceLastUpdate -= TimePerFrame;
+			Events(window);
+			Update(TimePerFrame);
+			Render(window);
+
+			frameCount++;
+			if (fpsClock.getElapsedTime().asSeconds() >= 1.0f)
+			{
+				std::cout << "FPS: " << frameCount << std::endl;
+				frameCount = 0;
+				fpsClock.restart();
+			}
+		}
+
+	}
+}
+
+void Game::Events(sf::RenderWindow& window)
+{
+	sf::Event event;
+	while (window.pollEvent(event))
+	{
+		if (event.type == sf::Event::Closed)
+		{
+			window.close();
+		}
+
+		pacman.Events(event);
+	}
+}
+
+void Game::Update(sf::Time deltaTime)
+{
+	pacman.Update(deltaTime, collisionRects);
+	redGhost.Update(deltaTime, collisionRects);
+	pinkGhost.Update(deltaTime, collisionRects);
+	orangeGhost.Update(deltaTime, collisionRects);
+	turquoiseGhost.Update(deltaTime, collisionRects);
+
+	for (auto& signpost : signposts)
+	{
+		signpost->Update(deltaTime, redGhost);
+		signpost->Update(deltaTime, pinkGhost);
+		signpost->Update(deltaTime, orangeGhost);
+		signpost->Update(deltaTime, turquoiseGhost);
+	}
+
+	if (pacman.CollisionWith(redGhost) || pacman.CollisionWith(pinkGhost) || pacman.CollisionWith(orangeGhost) || pacman.CollisionWith(turquoiseGhost))
+	{
+		Reset();
+	}
+}
+
+void Game::Render(sf::RenderWindow& window)
+{
+	window.clear();
+	window.draw(background);
+	pinkGhost.Render(window);
+	orangeGhost.Render(window);
+	turquoiseGhost.Render(window);
+	for(auto& rect : collisionRects)
+	{
+		rect->Render(window);
+	}
+	redGhost.Render(window);
+	pacman.Render(window);
+
+	for (auto& signpost : signposts)
+	{
+		signpost->Render(window);
+	}
+
+	//for (int i = 0; i < window.getSize().y; i += 50)
+	//{
+	//	lineY[0] = sf::Vertex(sf::Vector2f(0, i), sf::Color::White);
+	//	lineY[1] = sf::Vertex(sf::Vector2f(window.getSize().x, i), sf::Color::White);
+	//	window.draw(lineY, 2, sf::Lines);
+	//	for (int j = 0; j < window.getSize().x; j += 50)
+	//	{
+	//		lineX[0] = sf::Vertex(sf::Vector2f(j, 0), sf::Color::White);
+	//		lineX[1] = sf::Vertex(sf::Vector2f(j, window.getSize().y), sf::Color::White);
+	//		window.draw(lineX, 2, sf::Lines);
+	//	}
+	//}
+	window.display();
+}
+
+void Game::Reset()
+{
+	pacman.Reset();
+	redGhost.Reset(sf::Vector2f(350, 350), Direction::Left);
+	pinkGhost.Reset(sf::Vector2f(300, 450), Direction::Right);
+	orangeGhost.Reset(sf::Vector2f(350, 450), Direction::Up);
+	turquoiseGhost.Reset(sf::Vector2f(400, 450), Direction::Left);
+}
+
+void Game::InitCollisionRects()
+{
 	// Inner collision rects left side
 	collisionRects.push_back(new Collision(sf::Vector2f(100, 200), 100, 100));
 	collisionRects.push_back(new Collision(sf::Vector2f(100, 350), 100, 100));
@@ -56,15 +197,10 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 	collisionRects.push_back(new Collision(sf::Vector2f(0, 800), 800, 50));
 	collisionRects.push_back(new Collision(sf::Vector2f(0, 500), 50, 300));
 	collisionRects.push_back(new Collision(sf::Vector2f(700, 500), 50, 300));
+}
 
-	for (auto& rect : collisionRects)
-	{
-		rect->SetColor(sf::Color::Red);
-	}
-
-	//signposts
-	signposts.resize(36);
-
+void Game::InitSignposts()
+{
 	//left half of game map
 	//left left side from top down
 	signposts[0] = new Signpost(sf::Vector2f(50, 150));
@@ -116,12 +252,10 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 	//ghost start section in the middle
 	signposts[34] = new Signpost(sf::Vector2f(350, 350));
 	signposts[35] = new Signpost(sf::Vector2f(350, 450));
+}
 
-	for (auto& signpost : signposts)
-	{
-		signpost->SetColor(sf::Color::Transparent);
-	}
-
+void Game::InitSignpostDirections()
+{
 	//signposts directions
 	signposts[0]->SetDirection(Direction::Right);
 	signposts[0]->SetDirection(Direction::Down);
@@ -257,113 +391,4 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 	signposts[34]->SetDirection(Direction::Left);
 
 	signposts[35]->SetDirection(Direction::Up);
-
-	//init signposts rnd direction necessary for the size of the array
-	for (auto& signpost : signposts)
-	{
-		signpost->GenerateRandomNumber();
-	}
-}
-
-Game::~Game()
-{
-}
-
-void Game::Run(sf::RenderWindow& window)
-{
-	sf::Clock clock;
-	sf::Time timeSinceLastUpdate = sf::Time::Zero;
-	sf::Time TimePerFrame = sf::seconds(1.f / 60.f);
-
-	while (window.isOpen())
-	{
-		sf::Time deltaTime = clock.restart();
-		timeSinceLastUpdate += deltaTime;
-
-		while (timeSinceLastUpdate > TimePerFrame)
-		{
-			timeSinceLastUpdate -= TimePerFrame;
-			Events(window);
-			Update(TimePerFrame);
-			Render(window);
-
-			frameCount++;
-			if (fpsClock.getElapsedTime().asSeconds() >= 1.0f)
-			{
-				std::cout << "FPS: " << frameCount << std::endl;
-				frameCount = 0;
-				fpsClock.restart();
-			}
-		}
-
-	}
-}
-
-void Game::Events(sf::RenderWindow& window)
-{
-	sf::Event event;
-	while (window.pollEvent(event))
-	{
-		if (event.type == sf::Event::Closed)
-		{
-			window.close();
-		}
-
-		pacman.Events(event);
-	}
-}
-
-void Game::Update(sf::Time deltaTime)
-{
-	pacman.Update(deltaTime, collisionRects);
-	redGhost.Update(deltaTime, collisionRects);
-	pinkGhost.Update(deltaTime, collisionRects);
-	orangeGhost.Update(deltaTime, collisionRects);
-	turquoiseGhost.Update(deltaTime, collisionRects);
-
-	for (auto& signpost : signposts)
-	{
-		signpost->Update(deltaTime, redGhost);
-		signpost->Update(deltaTime, pinkGhost);
-		signpost->Update(deltaTime, orangeGhost);
-		signpost->Update(deltaTime, turquoiseGhost);
-	}
-}
-
-void Game::Render(sf::RenderWindow& window)
-{
-	window.clear();
-	window.draw(background);
-	pinkGhost.Render(window);
-	orangeGhost.Render(window);
-	turquoiseGhost.Render(window);
-	for(auto& rect : collisionRects)
-	{
-		rect->Render(window);
-	}
-	redGhost.Render(window);
-	pacman.Render(window);
-
-	for (auto& signpost : signposts)
-	{
-		signpost->Render(window);
-	}
-
-	//for (int i = 0; i < window.getSize().y; i += 50)
-	//{
-	//	lineY[0] = sf::Vertex(sf::Vector2f(0, i), sf::Color::White);
-	//	lineY[1] = sf::Vertex(sf::Vector2f(window.getSize().x, i), sf::Color::White);
-	//	window.draw(lineY, 2, sf::Lines);
-	//	for (int j = 0; j < window.getSize().x; j += 50)
-	//	{
-	//		lineX[0] = sf::Vertex(sf::Vector2f(j, 0), sf::Color::White);
-	//		lineX[1] = sf::Vertex(sf::Vector2f(j, window.getSize().y), sf::Color::White);
-	//		window.draw(lineX, 2, sf::Lines);
-	//	}
-	//}
-	window.display();
-}
-
-void Game::Reset()
-{
 }

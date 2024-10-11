@@ -135,3 +135,12 @@ void Ghost::OutOfBounds()
 		pupils.setPosition(15, pupils.getPosition().y);
 	}
 }
+
+void Ghost::Reset(sf::Vector2f ghostPos, sf::Vector2f direction)
+{
+	ghost.setPosition(ghostPos);
+	eyesBackground.setPosition(ghost.getPosition().x + 15, ghost.getPosition().y + 15);
+	pupils.setPosition(eyesBackground.getPosition());
+	this->direction = direction;
+	startClock.restart();
+}

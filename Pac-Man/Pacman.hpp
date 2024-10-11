@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Collision.hpp"
 #include "CollisionDetectionRect.hpp"
+#include "Ghost.hpp"
 
 class Pacman
 {
@@ -20,6 +21,8 @@ class Pacman
 		void ReactToCollision();
 		void SetSpeedX();
 		void SetSpeedY();
+		bool CollisionWith(Ghost& ghost);
+		void Reset();
 
 	private:
 		std::vector<sf::Vector2f> inputs;

@@ -12,6 +12,7 @@ class CollisionDetectionRect
 		void Render(sf::RenderWindow& window);
 		void SetColor(sf::Color color);
 		bool CheckCollisionWithWallColored(const std::vector<Collision*>& collisionRects);
+		void SetPosition(sf::Vector2f position);
 		sf::Vector2f direction;
 
 	private:

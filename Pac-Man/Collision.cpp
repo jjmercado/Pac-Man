@@ -29,3 +29,8 @@ void Collision::SetColor(sf::Color color)
 {
 	collision.setColor(color);
 }
+
+void Collision::SetPosition(sf::Vector2f position)
+{
+	collision.setPosition(position);
+}

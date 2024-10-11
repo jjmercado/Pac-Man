@@ -263,3 +263,25 @@ void Pacman::OutOfBounds()
 		pacman.setPosition(0, pacman.getPosition().y);
 	}
 }
+
+void Pacman::Reset()
+{
+	pacman.setPosition(375, 575);
+	collisionRect->SetPosition(pacman.getPosition() - sf::Vector2f(24.5, 24.5));
+	collisionDetectionRects[0]->SetPosition(pacman.getPosition() + sf::Vector2f(50, 0));
+	collisionDetectionRects[1]->SetPosition(pacman.getPosition() + sf::Vector2f(0, 50));
+	collisionDetectionRects[2]->SetPosition(pacman.getPosition() + sf::Vector2f(0, -50));
+	collisionDetectionRects[3]->SetPosition(pacman.getPosition() + sf::Vector2f(-50, 0));
+	direction = sf::Vector2f(-1, 0);
+}
+
+bool Pacman::CollisionWith(Ghost& ghost)
+{
+	if (pacman.getGlobalBounds().intersects(ghost.GetSprite().getGlobalBounds()))
+	{
+		return true;
+	}
+	return false;
+}
+
+

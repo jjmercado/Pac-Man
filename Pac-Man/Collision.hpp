@@ -12,6 +12,7 @@ class Collision
 		void Update(sf::Time deltaTime);
 		sf::Sprite collision;
 		void SetColor(sf::Color color);
+		void SetPosition(sf::Vector2f position);
 
 	private:
 		sf::Image collisionImage;
