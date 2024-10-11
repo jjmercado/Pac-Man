@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
+#include <array>
 #include <list>
 #include "Ghost.hpp"
 #include "Pacman.hpp"
@@ -33,11 +34,12 @@ private:
 	Pacman pacman;
 	std::vector<Collision*> collisionRects;
 	std::vector<Signpost*> signposts;
+	std::array<Dot, 102> dots;
 	sf::Vertex lineY[2];
 	sf::Vertex lineX[2];
 	void InitCollisionRects();
 	void InitSignposts();
 	void InitSignpostDirections();
-	Dot dot;
+	void InitDots();
 };
 

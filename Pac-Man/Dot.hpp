@@ -5,6 +5,7 @@ class Dot
 {
 	public:
 		Dot();
+		Dot(sf::Vector2f startPos);
 		~Dot();
 		void Render(sf::RenderWindow& window);
 		void Update(sf::Time deltaTime);

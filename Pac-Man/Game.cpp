@@ -41,6 +41,8 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 	{
 		signpost->GenerateRandomNumber();
 	}
+
+	InitDots();
 }
 
 Game::~Game()
@@ -107,9 +109,12 @@ void Game::Update(sf::Time deltaTime)
 		signpost->Update(deltaTime, turquoiseGhost);
 	}
 
-	if (pacman.CollisionWith(dot))
+	for (auto& dot : dots)
 	{
-		dot.Remove();
+		if (pacman.CollisionWith(dot))
+		{
+			dot.Remove();
+		}
 	}
 
 	if (pacman.CollisionWith(redGhost) || pacman.CollisionWith(pinkGhost) || pacman.CollisionWith(orangeGhost) || pacman.CollisionWith(turquoiseGhost))
@@ -121,7 +126,15 @@ void Game::Update(sf::Time deltaTime)
 void Game::Render(sf::RenderWindow& window)
 {
 	window.clear();
+
 	window.draw(background);
+
+	for (auto& dot : dots)
+	{
+		dot.Render(window);
+	}
+
+	redGhost.Render(window);
 	pinkGhost.Render(window);
 	orangeGhost.Render(window);
 	turquoiseGhost.Render(window);
@@ -129,10 +142,8 @@ void Game::Render(sf::RenderWindow& window)
 	//{
 	//	rect->Render(window);
 	//}
-	redGhost.Render(window);
 	pacman.Render(window);
 
-	dot.Render(window);
 
 	//for (auto& signpost : signposts)
 	//{
@@ -399,4 +410,130 @@ void Game::InitSignpostDirections()
 	signposts[34]->SetDirection(Direction::Left);
 
 	signposts[35]->SetDirection(Direction::Up);
+}
+
+void Game::InitDots()
+{
+	// left left side from top down
+	dots[0] = Dot(sf::Vector2f(75, 175));
+	dots[1] = Dot(sf::Vector2f(75, 225));
+	dots[2] = Dot(sf::Vector2f(75, 275));
+	dots[3] = Dot(sf::Vector2f(75, 325));
+	dots[4] = Dot(sf::Vector2f(75, 375));
+	dots[5] = Dot(sf::Vector2f(75, 425));
+	dots[6] = Dot(sf::Vector2f(75, 475));
+	dots[7] = Dot(sf::Vector2f(75, 525));
+	dots[8] = Dot(sf::Vector2f(75, 575));
+	dots[9] = Dot(sf::Vector2f(75, 625));
+	dots[10] = Dot(sf::Vector2f(75, 675));
+	dots[11] = Dot(sf::Vector2f(75, 725));
+	dots[12] = Dot(sf::Vector2f(75, 775));
+
+	// left middle side from top down
+	dots[13] = Dot(sf::Vector2f(225, 175));
+	dots[14] = Dot(sf::Vector2f(225, 225));
+	dots[15] = Dot(sf::Vector2f(225, 275));
+	dots[16] = Dot(sf::Vector2f(225, 325));
+	dots[17] = Dot(sf::Vector2f(225, 375));
+	dots[18] = Dot(sf::Vector2f(225, 425));
+	dots[19] = Dot(sf::Vector2f(225, 475));
+	dots[20] = Dot(sf::Vector2f(225, 525));
+	dots[21] = Dot(sf::Vector2f(225, 575));
+	dots[22] = Dot(sf::Vector2f(225, 625));
+	dots[23] = Dot(sf::Vector2f(225, 675));
+	dots[24] = Dot(sf::Vector2f(225, 725));
+	dots[25] = Dot(sf::Vector2f(225, 775));
+
+	// left right side from top down
+	dots[26] = Dot(sf::Vector2f(325, 175));
+	dots[27] = Dot(sf::Vector2f(325, 225));
+	dots[28] = Dot(sf::Vector2f(325, 275));
+	dots[29] = Dot(sf::Vector2f(325, 325));
+	dots[30] = Dot(sf::Vector2f(325, 375));
+	dots[31] = Dot(sf::Vector2f(325, 575));
+	dots[32] = Dot(sf::Vector2f(325, 675));
+	dots[33] = Dot(sf::Vector2f(325, 725));
+	dots[34] = Dot(sf::Vector2f(325, 775));
+
+	// right left side from top down
+	dots[35] = Dot(sf::Vector2f(425, 175));
+	dots[36] = Dot(sf::Vector2f(425, 225));
+	dots[37] = Dot(sf::Vector2f(425, 275));
+	dots[38] = Dot(sf::Vector2f(425, 325));
+	dots[39] = Dot(sf::Vector2f(425, 375));
+	dots[40] = Dot(sf::Vector2f(425, 575));
+	dots[41] = Dot(sf::Vector2f(425, 675));
+	dots[42] = Dot(sf::Vector2f(425, 725));
+	dots[43] = Dot(sf::Vector2f(425, 775));
+
+	// right middle side from top down
+	dots[44] = Dot(sf::Vector2f(525, 175));
+	dots[45] = Dot(sf::Vector2f(525, 225));
+	dots[46] = Dot(sf::Vector2f(525, 275));
+	dots[47] = Dot(sf::Vector2f(525, 325));
+	dots[48] = Dot(sf::Vector2f(525, 375));
+	dots[49] = Dot(sf::Vector2f(525, 425));
+	dots[50] = Dot(sf::Vector2f(525, 475));
+	dots[51] = Dot(sf::Vector2f(525, 525));
+	dots[52] = Dot(sf::Vector2f(525, 575));
+	dots[53] = Dot(sf::Vector2f(525, 625));
+	dots[54] = Dot(sf::Vector2f(525, 675));
+	dots[55] = Dot(sf::Vector2f(525, 725));
+	dots[56] = Dot(sf::Vector2f(525, 775));
+
+	// right right side from top down
+	dots[57] = Dot(sf::Vector2f(675, 175));
+	dots[58] = Dot(sf::Vector2f(675, 225));
+	dots[59] = Dot(sf::Vector2f(675, 275));
+	dots[60] = Dot(sf::Vector2f(675, 325));
+	dots[61] = Dot(sf::Vector2f(675, 375));
+	dots[62] = Dot(sf::Vector2f(675, 425));
+	dots[63] = Dot(sf::Vector2f(675, 475));
+	dots[64] = Dot(sf::Vector2f(675, 525));
+	dots[65] = Dot(sf::Vector2f(675, 575));
+	dots[66] = Dot(sf::Vector2f(675, 625));
+	dots[67] = Dot(sf::Vector2f(675, 675));
+	dots[68] = Dot(sf::Vector2f(675, 725));
+	dots[69] = Dot(sf::Vector2f(675, 775));
+
+	// left to right from top down
+	dots[70] = Dot(sf::Vector2f(125, 175));
+	dots[71] = Dot(sf::Vector2f(175, 175));
+	dots[72] = Dot(sf::Vector2f(275, 175));
+	dots[73] = Dot(sf::Vector2f(475, 175));
+	dots[74] = Dot(sf::Vector2f(575, 175));
+	dots[75] = Dot(sf::Vector2f(625, 175));
+
+	dots[76] = Dot(sf::Vector2f(125, 325));
+	dots[77] = Dot(sf::Vector2f(175, 325));
+	dots[78] = Dot(sf::Vector2f(575, 325));
+	dots[79] = Dot(sf::Vector2f(625, 325));
+
+	dots[80] = Dot(sf::Vector2f(275, 375));
+	dots[81] = Dot(sf::Vector2f(375, 375));
+	dots[82] = Dot(sf::Vector2f(475, 375));
+
+	dots[83] = Dot(sf::Vector2f(125, 475));
+	dots[84] = Dot(sf::Vector2f(175, 475));
+	dots[85] = Dot(sf::Vector2f(575, 475));
+	dots[86] = Dot(sf::Vector2f(625, 475));
+
+	dots[87] = Dot(sf::Vector2f(275, 575));
+	dots[88] = Dot(sf::Vector2f(475, 575));
+
+	dots[89] = Dot(sf::Vector2f(125, 625));
+	dots[90] = Dot(sf::Vector2f(175, 625));
+	dots[91] = Dot(sf::Vector2f(575, 625));
+	dots[92] = Dot(sf::Vector2f(625, 625));
+
+	dots[93] = Dot(sf::Vector2f(275, 675));
+	dots[94] = Dot(sf::Vector2f(475, 675));
+
+	dots[95] = Dot(sf::Vector2f(125, 775));
+	dots[96] = Dot(sf::Vector2f(175, 775));
+	dots[97] = Dot(sf::Vector2f(275, 775));
+	dots[98] = Dot(sf::Vector2f(375, 775));
+	dots[99] = Dot(sf::Vector2f(475, 775));
+	dots[100] = Dot(sf::Vector2f(575, 775));
+	dots[101] = Dot(sf::Vector2f(625, 775));
 }

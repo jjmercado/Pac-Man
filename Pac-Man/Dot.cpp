@@ -2,9 +2,13 @@
 
 Dot::Dot()
 {
+}
+
+Dot::Dot(sf::Vector2f startPos)
+{
 	circle.setRadius(5);
 	circle.setFillColor(sf::Color::Yellow);
-	circle.setPosition(275, 575);
+	circle.setPosition(startPos);
 	circle.setOrigin(2.5, 2.5);
 	points = 10;
 }
