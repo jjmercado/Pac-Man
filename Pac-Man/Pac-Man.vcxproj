@@ -133,6 +133,7 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="CollisionDetectionRect.cpp" />
     <ClCompile Include="Direction.cpp" />
+    <ClCompile Include="Dot.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -143,6 +144,7 @@
     <ClInclude Include="Collision.hpp" />
     <ClInclude Include="CollisionDetectionRect.hpp" />
     <ClInclude Include="Direction.hpp" />
+    <ClInclude Include="Dot.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="Ghost.hpp" />
     <ClInclude Include="Pacman.hpp" />
