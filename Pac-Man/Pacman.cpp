@@ -157,14 +157,22 @@ void Pacman::Update(sf::Time deltaTime, const std::vector<Collision*>& collision
 		nextDirectionRight = sf::Vector2f(0, 0);
 	}
 	
-	if(direction == collisionDetectionRects[0]->direction && nextDirectionLeft == sf::Vector2f(0, 0) && isCollisionDetectionRectColliding[0])
+	if (direction == collisionDetectionRects[0]->direction && nextDirectionLeft == sf::Vector2f(0, 0) && isCollisionDetectionRectColliding[0])
+	{
 		CheckCollisionWithWallColored(collisionRects);
+	}
 	else if (direction == collisionDetectionRects[3]->direction && nextDirectionRight == sf::Vector2f(0, 0) && isCollisionDetectionRectColliding[3])
+	{
 		CheckCollisionWithWallColored(collisionRects);
+	}
 	else if (direction == collisionDetectionRects[1]->direction && nextDirectionUp == sf::Vector2f(0, 0) && isCollisionDetectionRectColliding[1])
+	{
 		CheckCollisionWithWallColored(collisionRects);
+	}
 	else if (direction == collisionDetectionRects[2]->direction && nextDirectionDown == sf::Vector2f(0, 0) && isCollisionDetectionRectColliding[2])
+	{
 		CheckCollisionWithWallColored(collisionRects);
+	}
 }
 
 void Pacman::Animation(sf::Vector2f direction)
@@ -278,6 +286,15 @@ void Pacman::Reset()
 bool Pacman::CollisionWith(Ghost& ghost)
 {
 	if (pacman.getGlobalBounds().intersects(ghost.GetSprite().getGlobalBounds()))
+	{
+		return true;
+	}
+	return false;
+}
+
+bool Pacman::CollisionWith(Dot& dot)
+{
+	if (pacman.getGlobalBounds().intersects(dot.GetGlobalBounds()))
 	{
 		return true;
 	}

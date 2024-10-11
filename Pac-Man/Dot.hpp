@@ -9,6 +9,13 @@ class Dot
 		void Render(sf::RenderWindow& window);
 		void Update(sf::Time deltaTime);
 		void SetPosition(sf::Vector2f position);
-		sf::Sprite GetSprite();
+		sf::FloatRect GetGlobalBounds();
+		void Remove();
+		void Reset();
+
+	private:
+		sf::CircleShape circle;
+		sf::Sprite sprite;
+		int points;
 };
 

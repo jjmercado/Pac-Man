@@ -107,6 +107,11 @@ void Game::Update(sf::Time deltaTime)
 		signpost->Update(deltaTime, turquoiseGhost);
 	}
 
+	if (pacman.CollisionWith(dot))
+	{
+		dot.Remove();
+	}
+
 	if (pacman.CollisionWith(redGhost) || pacman.CollisionWith(pinkGhost) || pacman.CollisionWith(orangeGhost) || pacman.CollisionWith(turquoiseGhost))
 	{
 		Reset();
@@ -126,6 +131,8 @@ void Game::Render(sf::RenderWindow& window)
 	//}
 	redGhost.Render(window);
 	pacman.Render(window);
+
+	dot.Render(window);
 
 	//for (auto& signpost : signposts)
 	//{
@@ -154,6 +161,7 @@ void Game::Reset()
 	pinkGhost.Reset(sf::Vector2f(300, 450), Direction::Right);
 	orangeGhost.Reset(sf::Vector2f(350, 450), Direction::Up);
 	turquoiseGhost.Reset(sf::Vector2f(400, 450), Direction::Left);
+	//dot.Reset(); erst reseten wenn alle leben aufgebraucht sind
 }
 
 void Game::InitCollisionRects()

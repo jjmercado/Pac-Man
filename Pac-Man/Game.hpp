@@ -8,6 +8,7 @@
 #include "Collision.hpp"
 #include "Signpost.hpp"
 #include "Direction.hpp"
+#include "Dot.hpp"
 
 class Game
 {
@@ -37,5 +38,6 @@ private:
 	void InitCollisionRects();
 	void InitSignposts();
 	void InitSignpostDirections();
+	Dot dot;
 };
 
