@@ -42,6 +42,9 @@
     <ClCompile Include="Dot.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="PowerPellet.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.hpp">
@@ -66,6 +69,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Dot.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerPellet.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

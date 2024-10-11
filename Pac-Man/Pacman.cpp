@@ -16,7 +16,7 @@ Pacman::Pacman() : currentFrame(0), directionChanged(false)
 		pacman.setScale(-1.0, -1.0);
 	}
 
-	//speedX = 100.0f;
+	speedX = 100.0f;
 	direction = sf::Vector2f(-1, 0);
 	collisionRect = new Collision(pacman.getPosition() - sf::Vector2f(24.5, 24.5), 49, 49);
 
@@ -295,6 +295,15 @@ bool Pacman::CollisionWith(Ghost& ghost)
 bool Pacman::CollisionWith(Dot& dot)
 {
 	if (pacman.getGlobalBounds().intersects(dot.GetGlobalBounds()))
+	{
+		return true;
+	}
+	return false;
+}
+
+bool Pacman::CollisionWith(PowerPellet& powerPellet)
+{
+	if (pacman.getGlobalBounds().intersects(powerPellet.GetGlobalBounds()))
 	{
 		return true;
 	}

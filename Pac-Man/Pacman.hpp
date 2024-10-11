@@ -6,6 +6,7 @@
 #include "CollisionDetectionRect.hpp"
 #include "Ghost.hpp"
 #include "Dot.hpp"
+#include "PowerPellet.hpp"
 
 class Pacman
 {
@@ -24,6 +25,7 @@ class Pacman
 		void SetSpeedY();
 		bool CollisionWith(Ghost& ghost);
 		bool CollisionWith(Dot& dot);
+		bool CollisionWith(PowerPellet& powerPellet);
 		void Reset();
 
 	private:

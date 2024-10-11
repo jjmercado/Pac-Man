@@ -43,6 +43,7 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 	}
 
 	InitDots();
+	InitPowerPellets();
 }
 
 Game::~Game()
@@ -117,6 +118,14 @@ void Game::Update(sf::Time deltaTime)
 		}
 	}
 
+	for (auto& powerPellet : powerPellets)
+	{
+		if (pacman.CollisionWith(powerPellet))
+		{
+			powerPellet.Remove();
+		}
+	}
+
 	if (pacman.CollisionWith(redGhost) || pacman.CollisionWith(pinkGhost) || pacman.CollisionWith(orangeGhost) || pacman.CollisionWith(turquoiseGhost))
 	{
 		Reset();
@@ -132,6 +141,11 @@ void Game::Render(sf::RenderWindow& window)
 	for (auto& dot : dots)
 	{
 		dot.Render(window);
+	}
+
+	for (auto& powerPellet : powerPellets)
+	{
+		powerPellet.Render(window);
 	}
 
 	redGhost.Render(window);
@@ -532,8 +546,16 @@ void Game::InitDots()
 	dots[95] = Dot(sf::Vector2f(125, 775));
 	dots[96] = Dot(sf::Vector2f(175, 775));
 	dots[97] = Dot(sf::Vector2f(275, 775));
-	dots[98] = Dot(sf::Vector2f(375, 775));
-	dots[99] = Dot(sf::Vector2f(475, 775));
-	dots[100] = Dot(sf::Vector2f(575, 775));
-	dots[101] = Dot(sf::Vector2f(625, 775));
+	//dots[98] = Dot(sf::Vector2f(375, 775));
+	//dots[99] = Dot(sf::Vector2f(475, 775));
+	//dots[100] = Dot(sf::Vector2f(575, 775));
+	//dots[101] = Dot(sf::Vector2f(625, 775));
+}
+
+void Game::InitPowerPellets()
+{
+	powerPellets[0] = PowerPellet(sf::Vector2f(50, 50));
+	powerPellets[1] = PowerPellet(sf::Vector2f(750, 50));
+	powerPellets[2] = PowerPellet(sf::Vector2f(50, 750));
+	powerPellets[3] = PowerPellet(sf::Vector2f(750, 750));
 }

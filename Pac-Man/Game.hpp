@@ -10,6 +10,7 @@
 #include "Signpost.hpp"
 #include "Direction.hpp"
 #include "Dot.hpp"
+#include "PowerPellet.hpp"
 
 class Game
 {
@@ -34,12 +35,14 @@ private:
 	Pacman pacman;
 	std::vector<Collision*> collisionRects;
 	std::vector<Signpost*> signposts;
-	std::array<Dot, 102> dots;
+	std::array<Dot, 98> dots;
+	std::array<PowerPellet, 4> powerPellets;
 	sf::Vertex lineY[2];
 	sf::Vertex lineX[2];
 	void InitCollisionRects();
 	void InitSignposts();
 	void InitSignpostDirections();
 	void InitDots();
+	void InitPowerPellets();
 };
 
