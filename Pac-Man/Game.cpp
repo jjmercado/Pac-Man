@@ -164,6 +164,17 @@ void Game::Update(sf::Time deltaTime)
 		}
 	}
 
+	std::string tmpCurrentScore = currentScore.getString();
+	int currentScore = std::stoi(tmpCurrentScore);
+
+	std::string tmpHighScore = highScore.getString();
+	int highScore = std::stoi(tmpHighScore);
+
+	if (currentScore > highScore)
+	{
+		this->highScore.setString(this->currentScore.getString());
+	}
+
 	if (pacman.CollisionWith(redGhost) || pacman.CollisionWith(pinkGhost) || pacman.CollisionWith(orangeGhost) || pacman.CollisionWith(turquoiseGhost))
 	{
 		pacmanUiImages[live].setColor(sf::Color::Transparent);
