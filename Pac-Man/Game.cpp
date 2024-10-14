@@ -5,7 +5,7 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 				pinkGhost(sf::Color::Magenta, sf::Vector2f(300, 450), 10.0f, Direction::Right),
 				orangeGhost(sf::Color(255, 165, 0), sf::Vector2f(350, 450), 15.0f, Direction::Up),
 				turquoiseGhost(sf::Color::Cyan, sf::Vector2f(400, 450), 20.0f, Direction::Left),
-				pacman(), live(2)
+				pacman(), live(2), currentPoints(0)
 {
 	if (!backgroundTexture.loadFromFile("..\\Background.png"))
 	{
@@ -15,6 +15,30 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 	{
 		background.setTexture(backgroundTexture);
 		background.setPosition(0, 100);
+	}
+
+	if (!font.loadFromFile("..\\kenvector_future_thin.ttf"))
+	{
+		std::cout << "Error loading font" << std::endl;
+	}
+	else
+	{
+		currentScoreLabel.setFont(font);
+		highScoreLabel.setFont(font);
+		currentScore.setFont(font);
+		highScore.setFont(font);
+
+		currentScoreLabel.setPosition(50, 0);
+		currentScore.setPosition(currentScoreLabel.getPosition() + sf::Vector2f(0, 50));
+
+		highScoreLabel.setPosition(450, 0);
+		highScore.setPosition(highScoreLabel.getPosition() + sf::Vector2f(0, 50));
+
+		currentScoreLabel.setString("Score:");
+		currentScore.setString("0");
+
+		highScoreLabel.setString("Highscore:");
+		highScore.setString("0");
 	}
 
 	pacmanUiImages[0].setTexture(*pacman.GetTexture());
@@ -126,6 +150,8 @@ void Game::Update(sf::Time deltaTime)
 	{
 		if (pacman.CollisionWith(dot))
 		{
+			currentPoints += dot.GetPoints();
+			currentScore.setString(std::to_string(currentPoints));
 			dot.Remove();
 		}
 	}
@@ -149,6 +175,11 @@ void Game::Update(sf::Time deltaTime)
 void Game::Render(sf::RenderWindow& window)
 {
 	window.clear();
+
+	window.draw(currentScoreLabel);
+	window.draw(currentScore);
+	window.draw(highScoreLabel);
+	window.draw(highScore);
 
 	window.draw(background);
 

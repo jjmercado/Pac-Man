@@ -13,6 +13,7 @@ class Dot
 		sf::FloatRect GetGlobalBounds();
 		void Remove();
 		void Reset();
+		int GetPoints();
 
 	private:
 		sf::CircleShape circle;

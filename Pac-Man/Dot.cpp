@@ -48,3 +48,8 @@ void Dot::Reset()
 	circle.setFillColor(sf::Color::Yellow);
 	points = 10;
 }
+
+int Dot::GetPoints()
+{
+	return points;
+}

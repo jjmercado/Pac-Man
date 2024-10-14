@@ -12,6 +12,7 @@
 #include "Dot.hpp"
 #include "PowerPellet.hpp"
 
+
 class Game
 {
 public:
@@ -46,5 +47,11 @@ private:
 	void InitPowerPellets();
 	std::array<sf::Sprite, 3> pacmanUiImages;
 	int live;
+	sf::Font font;
+	sf::Text currentScore;
+	sf::Text highScore;
+	sf::Text currentScoreLabel;
+	sf::Text highScoreLabel;
+	int currentPoints;
 };
 
