@@ -80,10 +80,22 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 
 	InitDots();
 	InitPowerPellets();
+
+	std::ifstream highScoreFile("highScore.txt");
+	std::string str;
+
+	while (std::getline(highScoreFile, str))
+	{
+		highScore.setString(str);
+	}
 }
 
 Game::~Game()
 {
+	std::ofstream file("highScore.txt");
+	std::string tmpHighScore = highScore.getString();
+	file << tmpHighScore;
+	file.close();
 }
 
 void Game::Run(sf::RenderWindow& window)

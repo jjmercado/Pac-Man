@@ -11,7 +11,7 @@
 #include "Direction.hpp"
 #include "Dot.hpp"
 #include "PowerPellet.hpp"
-
+#include <fstream>
 
 class Game
 {
