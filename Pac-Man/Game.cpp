@@ -277,6 +277,9 @@ void Game::Reset()
 		{
 			pacmanUiImage.setColor(sf::Color::White);
 		}
+
+		currentScore.setString("0");
+		currentPoints = 0;
 	}
 }
 
