@@ -283,6 +283,11 @@ void Pacman::Reset()
 	direction = sf::Vector2f(-1, 0);
 }
 
+const sf::Texture* Pacman::GetTexture()
+{
+	return pacman.getTexture();
+}
+
 bool Pacman::CollisionWith(Ghost& ghost)
 {
 	if (pacman.getGlobalBounds().intersects(ghost.GetSprite().getGlobalBounds()))

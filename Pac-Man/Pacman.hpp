@@ -27,6 +27,8 @@ class Pacman
 		bool CollisionWith(Dot& dot);
 		bool CollisionWith(PowerPellet& powerPellet);
 		void Reset();
+		const sf::Texture* GetTexture();
+
 
 	private:
 		std::vector<sf::Vector2f> inputs;

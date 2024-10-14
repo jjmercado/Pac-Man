@@ -44,5 +44,7 @@ private:
 	void InitSignpostDirections();
 	void InitDots();
 	void InitPowerPellets();
+	std::array<sf::Sprite, 3> pacmanUiImages;
+	int live;
 };
 

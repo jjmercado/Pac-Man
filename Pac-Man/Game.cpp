@@ -5,7 +5,7 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 				pinkGhost(sf::Color::Magenta, sf::Vector2f(300, 450), 10.0f, Direction::Right),
 				orangeGhost(sf::Color(255, 165, 0), sf::Vector2f(350, 450), 15.0f, Direction::Up),
 				turquoiseGhost(sf::Color::Cyan, sf::Vector2f(400, 450), 20.0f, Direction::Left),
-				pacman()
+				pacman(), live(2)
 {
 	if (!backgroundTexture.loadFromFile("..\\Background.png"))
 	{
@@ -16,6 +16,18 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 		background.setTexture(backgroundTexture);
 		background.setPosition(0, 100);
 	}
+
+	pacmanUiImages[0].setTexture(*pacman.GetTexture());
+	pacmanUiImages[0].setTextureRect(sf::IntRect(50, 0, 50, 50));
+	pacmanUiImages[0].setPosition(sf::Vector2f(0, 850));
+
+	pacmanUiImages[1].setTexture(*pacman.GetTexture());
+	pacmanUiImages[1].setTextureRect(sf::IntRect(50, 0, 50, 50));
+	pacmanUiImages[1].setPosition(sf::Vector2f(50, 850));
+
+	pacmanUiImages[2].setTexture(*pacman.GetTexture());
+	pacmanUiImages[2].setTextureRect(sf::IntRect(50, 0, 50, 50));
+	pacmanUiImages[2].setPosition(sf::Vector2f(100, 850));
 
 	InitCollisionRects();
 
@@ -128,6 +140,8 @@ void Game::Update(sf::Time deltaTime)
 
 	if (pacman.CollisionWith(redGhost) || pacman.CollisionWith(pinkGhost) || pacman.CollisionWith(orangeGhost) || pacman.CollisionWith(turquoiseGhost))
 	{
+		pacmanUiImages[live].setColor(sf::Color::Transparent);
+		live--;
 		Reset();
 	}
 }
@@ -157,7 +171,11 @@ void Game::Render(sf::RenderWindow& window)
 	//	rect->Render(window);
 	//}
 	pacman.Render(window);
-
+	
+	for (auto& pacmanUiImage : pacmanUiImages)
+	{
+		window.draw(pacmanUiImage);
+	}
 
 	//for (auto& signpost : signposts)
 	//{
@@ -186,7 +204,26 @@ void Game::Reset()
 	pinkGhost.Reset(sf::Vector2f(300, 450), Direction::Right);
 	orangeGhost.Reset(sf::Vector2f(350, 450), Direction::Up);
 	turquoiseGhost.Reset(sf::Vector2f(400, 450), Direction::Left);
-	//dot.Reset(); erst reseten wenn alle leben aufgebraucht sind
+
+	if (live < 0)
+	{
+		live = 2;
+
+		for (auto& dot : dots)
+		{
+			dot.Reset();
+		}
+
+		for (auto& powerPellet : powerPellets)
+		{
+			powerPellet.Reset();
+		}
+
+		for (auto& pacmanUiImage : pacmanUiImages)
+		{
+			pacmanUiImage.setColor(sf::Color::White);
+		}
+	}
 }
 
 void Game::InitCollisionRects()
