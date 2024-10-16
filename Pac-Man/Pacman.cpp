@@ -252,12 +252,12 @@ void Pacman::ReactToCollision()
 
 void Pacman::SetSpeedX()
 {
-	speedX = 100.0f;
+	speedX = 200.0f;
 }
 
 void Pacman::SetSpeedY()
 {
-	speedY = 100.0f;
+	speedY = 200.0f;
 }
 
 void Pacman::OutOfBounds()
@@ -309,6 +309,15 @@ bool Pacman::CollisionWith(Dot& dot)
 bool Pacman::CollisionWith(PowerPellet& powerPellet)
 {
 	if (pacman.getGlobalBounds().intersects(powerPellet.GetGlobalBounds()))
+	{
+		return true;
+	}
+	return false;
+}
+
+bool Pacman::CollisionWith(Fruit& fruit)
+{
+	if (pacman.getGlobalBounds().intersects(fruit.GetGlobalBounds()))
 	{
 		return true;
 	}

@@ -5,7 +5,7 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 				pinkGhost(sf::Color::Magenta, sf::Vector2f(300, 450), 10.0f, Direction::Right),
 				orangeGhost(sf::Color(255, 165, 0), sf::Vector2f(350, 450), 15.0f, Direction::Up),
 				turquoiseGhost(sf::Color::Cyan, sf::Vector2f(400, 450), 20.0f, Direction::Left),
-				pacman(), live(2), currentPoints(0)
+				pacman(), live(2), currentPoints(0), dotCounter(0), fruitCounter(0), canEat(false)
 {
 	if (!backgroundTexture.loadFromFile("..\\Background.png"))
 	{
@@ -88,6 +88,8 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 	{
 		highScore.setString(str);
 	}
+
+	InitFruits();
 }
 
 Game::~Game()
@@ -150,6 +152,12 @@ void Game::Update(sf::Time deltaTime)
 	orangeGhost.Update(deltaTime, collisionRects);
 	turquoiseGhost.Update(deltaTime, collisionRects);
 
+	if (fruitCounter >= 8)
+	{
+		fruitCounter = 0;
+		fruits[0]->isActive = false;
+	}
+
 	for (auto& signpost : signposts)
 	{
 		signpost->Update(deltaTime, redGhost);
@@ -158,14 +166,45 @@ void Game::Update(sf::Time deltaTime)
 		signpost->Update(deltaTime, turquoiseGhost);
 	}
 
+	fruits[fruitCounter]->Update(deltaTime);
+
 	for (auto& dot : dots)
 	{
-		if (pacman.CollisionWith(dot))
+		if (pacman.CollisionWith(dot) && dot.isActive)
 		{
 			currentPoints += dot.GetPoints();
 			currentScore.setString(std::to_string(currentPoints));
+			dotCounter++;
 			dot.Remove();
 		}
+	}
+
+	if (dotCounter == 10 && !fruits[fruitCounter]->isActive)
+	{
+		fruits[fruitCounter]->isActive = true;
+		dotCounter = 0;
+		//fruitCounter++; // setzt den counter hier direkt hoch was bedeutet das das nächste element bereits gerendert wird - soll aber eigentlich erst nach dem zweiten Mal ablaufen der Zeit passiern
+	}
+	else if (dotCounter == 5 && !fruits[fruitCounter]->isActive && !canEat)
+	{
+		fruits[fruitCounter]->isActive = true;
+	}
+
+	if (dotCounter == 5)
+	{
+		canEat = true;
+	}
+	else
+	{
+		canEat = false;
+	}
+
+	if (pacman.CollisionWith(*fruits[fruitCounter]) && fruits[fruitCounter]->isActive)
+	{
+		currentPoints += fruits[fruitCounter]->GetPoints();
+		currentScore.setString(std::to_string(currentPoints));
+		fruitCounter++;
+		fruits[fruitCounter]->Remove();
 	}
 
 	for (auto& powerPellet : powerPellets)
@@ -203,6 +242,11 @@ void Game::Render(sf::RenderWindow& window)
 	window.draw(currentScore);
 	window.draw(highScoreLabel);
 	window.draw(highScore);
+
+	if (fruits[fruitCounter]->isActive)
+	{
+		fruits[fruitCounter]->Render(window);
+	}
 
 	window.draw(background);
 
@@ -652,4 +696,16 @@ void Game::InitPowerPellets()
 	powerPellets[1] = PowerPellet(sf::Vector2f(670, 170));
 	powerPellets[2] = PowerPellet(sf::Vector2f(70, 770));
 	powerPellets[3] = PowerPellet(sf::Vector2f(670, 770));
+}
+
+void Game::InitFruits()
+{
+	fruits[0] = new Fruit(sf::IntRect(0, 0, 50, 50), 100); // cherry
+	fruits[1] = new Fruit(sf::IntRect(50, 0, 50, 50), 300); // strawberry
+	fruits[2] = new Fruit(sf::IntRect(100, 0, 50, 50), 500); // orange
+	fruits[3] = new Fruit(sf::IntRect(150, 0, 50, 50), 700); // apple
+	fruits[4] = new Fruit(sf::IntRect(0, 50, 50, 50), 1000); // melon
+	fruits[5] = new Fruit(sf::IntRect(50, 50, 50, 50), 2000); // galaxien
+	fruits[6] = new Fruit(sf::IntRect(100, 50, 50, 50), 3000); // bell
+	fruits[7] = new Fruit(sf::IntRect(150, 50, 50, 50), 5000); // key
 }

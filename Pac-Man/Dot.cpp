@@ -11,6 +11,7 @@ Dot::Dot(sf::Vector2f startPos)
 	circle.setPosition(startPos);
 	circle.setOrigin(2.5, 2.5);
 	points = 10;
+	isActive = true;
 }
 
 Dot::~Dot()
@@ -38,15 +39,16 @@ sf::FloatRect Dot::GetGlobalBounds()
 
 void Dot::Remove()
 {
-	//punkte konto erhöhen
 	circle.setFillColor(sf::Color::Transparent);
 	points = 0;
+	isActive = false;
 }
 
 void Dot::Reset()
 {
 	circle.setFillColor(sf::Color::Yellow);
 	points = 10;
+	isActive = true;
 }
 
 int Dot::GetPoints()

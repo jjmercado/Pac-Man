@@ -12,6 +12,7 @@
 #include "Dot.hpp"
 #include "PowerPellet.hpp"
 #include <fstream>
+#include "Fruit.hpp"
 
 class Game
 {
@@ -45,6 +46,7 @@ private:
 	void InitSignpostDirections();
 	void InitDots();
 	void InitPowerPellets();
+	void InitFruits();
 	std::array<sf::Sprite, 3> pacmanUiImages;
 	int live;
 	sf::Font font;
@@ -53,5 +55,9 @@ private:
 	sf::Text currentScoreLabel;
 	sf::Text highScoreLabel;
 	int currentPoints;
+	int dotCounter;
+	int fruitCounter;
+	std::array<Fruit*, 8> fruits;
+	bool canEat;
 };
 

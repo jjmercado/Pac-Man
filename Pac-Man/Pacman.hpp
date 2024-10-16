@@ -7,6 +7,7 @@
 #include "Ghost.hpp"
 #include "Dot.hpp"
 #include "PowerPellet.hpp"
+#include "Fruit.hpp"
 
 class Pacman
 {
@@ -26,6 +27,7 @@ class Pacman
 		bool CollisionWith(Ghost& ghost);
 		bool CollisionWith(Dot& dot);
 		bool CollisionWith(PowerPellet& powerPellet);
+		bool CollisionWith(Fruit& fruit);
 		void Reset();
 		const sf::Texture* GetTexture();
 

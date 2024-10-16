@@ -14,6 +14,7 @@ class Dot
 		void Remove();
 		void Reset();
 		int GetPoints();
+		bool isActive;
 
 	private:
 		sf::CircleShape circle;
