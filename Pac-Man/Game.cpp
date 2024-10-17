@@ -140,6 +140,11 @@ void Game::Events(sf::RenderWindow& window)
 			window.close();
 		}
 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::B))
+		{
+			fruits[0]->SetState(State::ACTIVE);
+		}
+
 		pacman.Events(event);
 	}
 }
@@ -151,12 +156,6 @@ void Game::Update(sf::Time deltaTime)
 	pinkGhost.Update(deltaTime, collisionRects);
 	orangeGhost.Update(deltaTime, collisionRects);
 	turquoiseGhost.Update(deltaTime, collisionRects);
-
-	if (fruitCounter >= 8)
-	{
-		fruitCounter = 0;
-		fruits[0]->isActive = false;
-	}
 
 	for (auto& signpost : signposts)
 	{
@@ -179,27 +178,7 @@ void Game::Update(sf::Time deltaTime)
 		}
 	}
 
-	if (dotCounter == 10 && !fruits[fruitCounter]->isActive)
-	{
-		fruits[fruitCounter]->isActive = true;
-		dotCounter = 0;
-		//fruitCounter++; // setzt den counter hier direkt hoch was bedeutet das das nächste element bereits gerendert wird - soll aber eigentlich erst nach dem zweiten Mal ablaufen der Zeit passiern
-	}
-	else if (dotCounter == 5 && !fruits[fruitCounter]->isActive && !canEat)
-	{
-		fruits[fruitCounter]->isActive = true;
-	}
-
-	if (dotCounter == 5)
-	{
-		canEat = true;
-	}
-	else
-	{
-		canEat = false;
-	}
-
-	if (pacman.CollisionWith(*fruits[fruitCounter]) && fruits[fruitCounter]->isActive)
+	if (pacman.CollisionWith(*fruits[fruitCounter]) && canEat)
 	{
 		currentPoints += fruits[fruitCounter]->GetPoints();
 		currentScore.setString(std::to_string(currentPoints));
@@ -243,10 +222,7 @@ void Game::Render(sf::RenderWindow& window)
 	window.draw(highScoreLabel);
 	window.draw(highScore);
 
-	if (fruits[fruitCounter]->isActive)
-	{
-		fruits[fruitCounter]->Render(window);
-	}
+	fruits[fruitCounter]->Render(window);
 
 	window.draw(background);
 

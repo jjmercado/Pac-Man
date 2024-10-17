@@ -4,7 +4,7 @@ Fruit::Fruit()
 {
 }
 
-Fruit::Fruit(sf::IntRect rect, int points)
+Fruit::Fruit(sf::IntRect rect, int points) : currentState(State::INACTIVE)
 {
 	if (!texture.loadFromFile("..\\fruits.png", rect))
 	{
@@ -17,7 +17,7 @@ Fruit::Fruit(sf::IntRect rect, int points)
 	}
 
 	this->points = points;
-	isActive = false;
+	canGetEat = false;
 	clockTime = 5.0f;
 }
 
@@ -27,21 +27,31 @@ Fruit::~Fruit()
 
 void Fruit::Render(sf::RenderWindow& window)
 {
-	window.draw(sprite);
+	if (currentState == State::ACTIVE)
+	{
+		window.draw(sprite);
+	}
 }
 
 void Fruit::Update(sf::Time deltaTime)
 {
-	if (isActive)
+	switch (currentState)
 	{
-		if (SetStartTime())
+		case State::ACTIVE:
 		{
-			isActive = false;
+			Activate();
+			break;
 		}
-	}
-	else
-	{
-		startClock.restart();
+		case State::INACTIVE:
+		{
+			Deactivate();
+			break;
+		}
+		default:
+		{
+
+			break;
+		}
 	}
 }
 
@@ -61,7 +71,17 @@ int Fruit::GetPoints()
 	return points;
 }
 
-bool Fruit::SetStartTime()
+bool Fruit::GetState()
+{
+	return canGetEat;
+}
+
+void Fruit::SetState(State state)
+{
+	currentState = state;
+}
+
+void Fruit::SetStartTime()
 {
 	// Setzt die Startzeit für den Ghost
 	// startTime = 0 -> Ghost bewegt sich sofort
@@ -71,7 +91,18 @@ bool Fruit::SetStartTime()
 	sf::Time time = startClock.getElapsedTime();
 	if (time.asSeconds() >= clockTime)
 	{
-		return true;
+		Deactivate();
 	}
-	return false;
+}
+
+void Fruit::Activate()
+{
+	currentState = State::ACTIVE;
+	SetStartTime();
+}
+
+void Fruit::Deactivate()
+{
+	startClock.restart();
+	currentState = State::INACTIVE;
 }

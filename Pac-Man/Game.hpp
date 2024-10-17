@@ -57,6 +57,7 @@ private:
 	int currentPoints;
 	int dotCounter;
 	int fruitCounter;
+	int fruitSpawned;
 	std::array<Fruit*, 8> fruits;
 	bool canEat;
 };
