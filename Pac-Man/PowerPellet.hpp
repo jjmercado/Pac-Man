@@ -13,6 +13,7 @@ public:
 	sf::FloatRect GetGlobalBounds();
 	void Remove();
 	void Reset();
+	bool isActive;
 
 private:
 	sf::CircleShape circle;

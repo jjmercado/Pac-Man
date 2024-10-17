@@ -30,6 +30,7 @@ private:
 	sf::Texture backgroundTexture;
 	sf::Sprite background;
 	void Reset();
+	void ResetWhenDotsGotAte();
 	Ghost redGhost;
 	Ghost pinkGhost;
 	Ghost orangeGhost;
@@ -59,6 +60,7 @@ private:
 	int fruitCounter;
 	int fruitSpawned;
 	std::array<Fruit*, 8> fruits;
-	bool canEat;
+	bool dotsAte;
+	bool pelletsAte;
 };
 

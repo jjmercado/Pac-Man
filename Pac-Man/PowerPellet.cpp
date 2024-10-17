@@ -4,7 +4,7 @@ PowerPellet::PowerPellet()
 {
 }
 
-PowerPellet::PowerPellet(sf::Vector2f startPos)
+PowerPellet::PowerPellet(sf::Vector2f startPos) : isActive(true)
 {
 	circle.setRadius(12);
 	circle.setFillColor(sf::Color::Yellow);
@@ -41,10 +41,12 @@ void PowerPellet::Remove()
 	//punkte konto erhöhen
 	circle.setFillColor(sf::Color::Transparent);
 	points = 0;
+	isActive = false;
 }
 
 void PowerPellet::Reset()
 {
 	circle.setFillColor(sf::Color::Yellow);
 	points = 50;
+	isActive = true;
 }

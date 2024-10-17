@@ -5,7 +5,7 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 				pinkGhost(sf::Color::Magenta, sf::Vector2f(300, 450), 10.0f, Direction::Right),
 				orangeGhost(sf::Color(255, 165, 0), sf::Vector2f(350, 450), 15.0f, Direction::Up),
 				turquoiseGhost(sf::Color::Cyan, sf::Vector2f(400, 450), 20.0f, Direction::Left),
-				pacman(), live(2), currentPoints(0), dotCounter(0), fruitCounter(0), canEat(false)
+				pacman(), live(2), currentPoints(0), dotCounter(0), fruitCounter(0), dotsAte(false), pelletsAte(false)
 {
 	if (!backgroundTexture.loadFromFile("..\\Background.png"))
 	{
@@ -173,6 +173,42 @@ void Game::Update(sf::Time deltaTime)
 		}
 	}
 
+	for (int i = 1; i < dots.size();)
+	{
+		if (!dots[i].isActive)
+		{
+			i++;
+			if (i == dots.size())
+			{
+				dotsAte = true;
+			}
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	for (int i = 1; i < powerPellets.size();)
+	{
+		if (!powerPellets[i].isActive)
+		{
+			i++;
+			if (i == powerPellets.size())
+			{
+				pelletsAte = true;
+			}
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	if (dotsAte && pelletsAte)
+	{
+		ResetWhenDotsGotAte();
+	}
 
 	if (dotCounter == 40)
 	{
@@ -221,11 +257,17 @@ void Game::Update(sf::Time deltaTime)
 		this->highScore.setString(this->currentScore.getString());
 	}
 
-	if (pacman.CollisionWith(redGhost) || pacman.CollisionWith(pinkGhost) || pacman.CollisionWith(orangeGhost) || pacman.CollisionWith(turquoiseGhost))
+	//if (pacman.CollisionWith(redGhost) || pacman.CollisionWith(pinkGhost) || pacman.CollisionWith(orangeGhost) || pacman.CollisionWith(turquoiseGhost))
+	//{
+	//	pacmanUiImages[live].setColor(sf::Color::Transparent);
+	//	live--;
+	//	Reset();
+	//}
+
+	if (fruitCounter >= fruits.size())
 	{
-		pacmanUiImages[live].setColor(sf::Color::Transparent);
-		live--;
-		Reset();
+		fruitCounter = 0;
+		fruits[fruitCounter]->SetState(State::INACTIVE);
 	}
 }
 
@@ -316,6 +358,25 @@ void Game::Reset()
 
 		currentScore.setString("0");
 		currentPoints = 0;
+	}
+}
+
+void Game::ResetWhenDotsGotAte()
+{
+	pacman.Reset();
+	redGhost.Reset(sf::Vector2f(350, 350), Direction::Left);
+	pinkGhost.Reset(sf::Vector2f(300, 450), Direction::Right);
+	orangeGhost.Reset(sf::Vector2f(350, 450), Direction::Up);
+	turquoiseGhost.Reset(sf::Vector2f(400, 450), Direction::Left);
+
+	for (auto& dot : dots)
+	{
+		dot.Reset();
+	}
+
+	for (auto& powerPellet : powerPellets)
+	{
+		powerPellet.Reset();
 	}
 }
 
@@ -701,3 +762,7 @@ void Game::InitFruits()
 	fruits[6] = new Fruit(sf::IntRect(100, 50, 50, 50), 3000); // bell
 	fruits[7] = new Fruit(sf::IntRect(150, 50, 50, 50), 5000); // key
 }
+
+// power pellets und geister fressen
+// win condition wenn alle dots gefressen wurden - spiel wird bis auf den score und die leben zurückgesetzt
+// bug - wenn eine richtungs taste dauerhaft gedrückt wird bewegt sich pacman durch die wand
