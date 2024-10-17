@@ -4,7 +4,7 @@ Fruit::Fruit()
 {
 }
 
-Fruit::Fruit(sf::IntRect rect, int points) : currentState(State::INACTIVE)
+Fruit::Fruit(sf::IntRect rect, int points) : currentState(State::INACTIVE), called(0)
 {
 	if (!texture.loadFromFile("..\\fruits.png", rect))
 	{
@@ -71,14 +71,33 @@ int Fruit::GetPoints()
 	return points;
 }
 
-bool Fruit::GetState()
+State Fruit::GetState()
 {
-	return canGetEat;
+	return currentState;
 }
 
 void Fruit::SetState(State state)
 {
 	currentState = state;
+}
+
+bool Fruit::SpawnedTwice()
+{
+	if (called == 2)
+	{
+		return true;
+	}
+	return false;
+}
+
+void Fruit::IncreaseSpawnCounter()
+{
+	called++;
+}
+
+void Fruit::ResetSpawnCounter()
+{
+	called = 0;
 }
 
 void Fruit::SetStartTime()

@@ -252,12 +252,12 @@ void Pacman::ReactToCollision()
 
 void Pacman::SetSpeedX()
 {
-	speedX = 200.0f;
+	speedX = 100.0f;
 }
 
 void Pacman::SetSpeedY()
 {
-	speedY = 200.0f;
+	speedY = 100.0f;
 }
 
 void Pacman::OutOfBounds()

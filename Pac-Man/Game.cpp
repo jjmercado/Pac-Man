@@ -140,11 +140,6 @@ void Game::Events(sf::RenderWindow& window)
 			window.close();
 		}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::B))
-		{
-			fruits[0]->SetState(State::ACTIVE);
-		}
-
 		pacman.Events(event);
 	}
 }
@@ -178,12 +173,33 @@ void Game::Update(sf::Time deltaTime)
 		}
 	}
 
-	if (pacman.CollisionWith(*fruits[fruitCounter]) && canEat)
+
+	if (dotCounter == 40)
+	{
+		fruits[fruitCounter]->SetState(State::ACTIVE);
+		dotCounter = 0;
+		fruits[fruitCounter]->IncreaseSpawnCounter();
+	}
+	else if (dotCounter == 20)
+	{
+		fruits[fruitCounter]->SetState(State::ACTIVE);
+		dotCounter++;
+		fruits[fruitCounter]->IncreaseSpawnCounter();
+	}
+
+	if (fruits[fruitCounter]->SpawnedTwice() && fruits[fruitCounter]->GetState() == State::INACTIVE)
+	{
+		fruits[fruitCounter]->ResetSpawnCounter();
+		fruitCounter++;
+	}
+
+	if (pacman.CollisionWith(*fruits[fruitCounter]) && fruits[fruitCounter]->GetState() == State::ACTIVE)
 	{
 		currentPoints += fruits[fruitCounter]->GetPoints();
 		currentScore.setString(std::to_string(currentPoints));
-		fruitCounter++;
 		fruits[fruitCounter]->Remove();
+		dotCounter = 0;
+		fruitCounter++;
 	}
 
 	for (auto& powerPellet : powerPellets)

@@ -19,10 +19,14 @@ class Fruit
 		sf::FloatRect GetGlobalBounds();
 		void Remove();
 		int GetPoints();
-		bool GetState();
+		State GetState();
 		void SetState(State state);
+		bool SpawnedTwice();
+		void IncreaseSpawnCounter();
+		void ResetSpawnCounter();
 	
 	private:
+		int called;
 		bool canGetEat;
 		void SetStartTime();
 		float clockTime;
