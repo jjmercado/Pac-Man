@@ -8,6 +8,7 @@
 #include "Dot.hpp"
 #include "PowerPellet.hpp"
 #include "Fruit.hpp"
+#include "Direction.hpp"
 
 class Pacman
 {

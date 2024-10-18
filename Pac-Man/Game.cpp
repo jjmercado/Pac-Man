@@ -257,12 +257,12 @@ void Game::Update(sf::Time deltaTime)
 		this->highScore.setString(this->currentScore.getString());
 	}
 
-	if (pacman.CollisionWith(redGhost) || pacman.CollisionWith(pinkGhost) || pacman.CollisionWith(orangeGhost) || pacman.CollisionWith(turquoiseGhost))
-	{
-		pacmanUiImages[live].setColor(sf::Color::Transparent);
-		live--;
-		Reset();
-	}
+	//if (pacman.CollisionWith(redGhost) || pacman.CollisionWith(pinkGhost) || pacman.CollisionWith(orangeGhost) || pacman.CollisionWith(turquoiseGhost))
+	//{
+	//	pacmanUiImages[live].setColor(sf::Color::Transparent);
+	//	live--;
+	//	Reset();
+	//}
 
 	if (fruitCounter >= fruits.size())
 	{
@@ -358,6 +358,8 @@ void Game::ResetWhenDotsGotAte()
 	pinkGhost.Reset(sf::Vector2f(300, 450), Direction::Right);
 	orangeGhost.Reset(sf::Vector2f(350, 450), Direction::Up);
 	turquoiseGhost.Reset(sf::Vector2f(400, 450), Direction::Left);
+	dotsAte = false;
+	pelletsAte = false;
 
 	for (auto& dot : dots)
 	{
@@ -770,5 +772,3 @@ void Game::Grid(sf::RenderWindow& window)
 }
 
 // power pellets und geister fressen
-// bug - wenn eine richtungs taste dauerhaft gedrückt wird bewegt sich pacman durch die wand
-// bug - wenn das game resettet wenn alle dots gefressen wurden bewegt sich nichts
