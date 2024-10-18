@@ -1,5 +1,8 @@
 #include "Game.hpp"
 
+// know bugs -> when going through tunnel and pressing up and down pacman can move up and down
+//			 -> when starting the game and pressing up or down multiple times the chance is high pacman gets stuck
+
 Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 				pacman(), live(2), currentPoints(0), dotCounter(0), fruitCounter(0), dotsAte(false), pelletsAte(false)
 {

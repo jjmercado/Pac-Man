@@ -265,11 +265,11 @@ void Pacman::SetSpeedY()
 
 void Pacman::OutOfBounds()
 {
-	if (pacman.getPosition().x < 0)
+	if (pacman.getPosition().x + pacman.getGlobalBounds().width < 0)
 	{
 		pacman.setPosition(800, pacman.getPosition().y);
 	}
-	else if (pacman.getPosition().x > 800)
+	else if (pacman.getPosition().x - pacman.getGlobalBounds().width > 800)
 	{
 		pacman.setPosition(0, pacman.getPosition().y);
 	}
