@@ -62,5 +62,6 @@ private:
 	std::array<Fruit*, 8> fruits;
 	bool dotsAte;
 	bool pelletsAte;
+	void Grid(sf::RenderWindow& window);
 };
 

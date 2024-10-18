@@ -257,12 +257,12 @@ void Game::Update(sf::Time deltaTime)
 		this->highScore.setString(this->currentScore.getString());
 	}
 
-	//if (pacman.CollisionWith(redGhost) || pacman.CollisionWith(pinkGhost) || pacman.CollisionWith(orangeGhost) || pacman.CollisionWith(turquoiseGhost))
-	//{
-	//	pacmanUiImages[live].setColor(sf::Color::Transparent);
-	//	live--;
-	//	Reset();
-	//}
+	if (pacman.CollisionWith(redGhost) || pacman.CollisionWith(pinkGhost) || pacman.CollisionWith(orangeGhost) || pacman.CollisionWith(turquoiseGhost))
+	{
+		pacmanUiImages[live].setColor(sf::Color::Transparent);
+		live--;
+		Reset();
+	}
 
 	if (fruitCounter >= fruits.size())
 	{
@@ -314,18 +314,8 @@ void Game::Render(sf::RenderWindow& window)
 	//	signpost->Render(window);
 	//}
 
-	//for (int i = 0; i < window.getSize().y; i += 50)
-	//{
-	//	lineY[0] = sf::Vertex(sf::Vector2f(0, i), sf::Color::White);
-	//	lineY[1] = sf::Vertex(sf::Vector2f(window.getSize().x, i), sf::Color::White);
-	//	window.draw(lineY, 2, sf::Lines);
-	//	for (int j = 0; j < window.getSize().x; j += 50)
-	//	{
-	//		lineX[0] = sf::Vertex(sf::Vector2f(j, 0), sf::Color::White);
-	//		lineX[1] = sf::Vertex(sf::Vector2f(j, window.getSize().y), sf::Color::White);
-	//		window.draw(lineX, 2, sf::Lines);
-	//	}
-	//}
+	//Grid(window);
+
 	window.display();
 }
 
@@ -763,6 +753,22 @@ void Game::InitFruits()
 	fruits[7] = new Fruit(sf::IntRect(150, 50, 50, 50), 5000); // key
 }
 
+void Game::Grid(sf::RenderWindow& window)
+{
+	for (int i = 0; i < window.getSize().y; i += 50)
+	{
+		lineY[0] = sf::Vertex(sf::Vector2f(0, i), sf::Color::White);
+		lineY[1] = sf::Vertex(sf::Vector2f(window.getSize().x, i), sf::Color::White);
+		window.draw(lineY, 2, sf::Lines);
+		for (int j = 0; j < window.getSize().x; j += 50)
+		{
+			lineX[0] = sf::Vertex(sf::Vector2f(j, 0), sf::Color::White);
+			lineX[1] = sf::Vertex(sf::Vector2f(j, window.getSize().y), sf::Color::White);
+			window.draw(lineX, 2, sf::Lines);
+		}
+	}
+}
+
 // power pellets und geister fressen
-// win condition wenn alle dots gefressen wurden - spiel wird bis auf den score und die leben zurückgesetzt
 // bug - wenn eine richtungs taste dauerhaft gedrückt wird bewegt sich pacman durch die wand
+// bug - wenn das game resettet wenn alle dots gefressen wurden bewegt sich nichts

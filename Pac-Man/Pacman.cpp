@@ -1,6 +1,8 @@
 #include "Pacman.hpp"
 
-Pacman::Pacman() : currentFrame(0), directionChanged(false)
+Pacman::Pacman() : currentFrame(0), directionChanged(false), isColliding(false), speedX(100.0f), speedY(0.0f), direction(sf::Vector2f(-1, 0)),
+					nextDirectionDown(sf::Vector2f(0,0)), nextDirectionUp(sf::Vector2f(0, 0)), 
+					nextDirectionRight(sf::Vector2f(0, 0)), nextDirectionLeft(sf::Vector2f(0, 0))
 {
 	if (!pacmanTexture.loadFromFile("..\\pacman.png"))
 	{
@@ -16,8 +18,6 @@ Pacman::Pacman() : currentFrame(0), directionChanged(false)
 		pacman.setScale(-1.0, -1.0);
 	}
 
-	speedX = 100.0f;
-	direction = sf::Vector2f(-1, 0);
 	collisionRect = new Collision(pacman.getPosition() - sf::Vector2f(24.5, 24.5), 49, 49);
 
 	collisionDetectionRects.resize(4);
@@ -92,12 +92,12 @@ void Pacman::Events(sf::Event event)
 void Pacman::Render(sf::RenderWindow& window)
 {
 	window.draw(pacman);
-	//collisionRect->Render(window);
+	collisionRect->Render(window);
 
-	//for (auto& rect : collisionDetectionRects)
-	//{
-	//	rect->Render(window);
-	//}
+	for (auto& rect : collisionDetectionRects)
+	{
+		rect->Render(window);
+	}
 }
 
 void Pacman::Update(sf::Time deltaTime, const std::vector<Collision*>& collisionRects)
@@ -157,19 +157,19 @@ void Pacman::Update(sf::Time deltaTime, const std::vector<Collision*>& collision
 		nextDirectionRight = sf::Vector2f(0, 0);
 	}
 	
-	if (direction == collisionDetectionRects[0]->direction && nextDirectionLeft == sf::Vector2f(0, 0) && isCollisionDetectionRectColliding[0])
+	if (direction == collisionDetectionRects[0]->direction && isCollisionDetectionRectColliding[0])
 	{
 		CheckCollisionWithWallColored(collisionRects);
 	}
-	else if (direction == collisionDetectionRects[3]->direction && nextDirectionRight == sf::Vector2f(0, 0) && isCollisionDetectionRectColliding[3])
+	else if (direction == collisionDetectionRects[3]->direction && isCollisionDetectionRectColliding[3])
 	{
 		CheckCollisionWithWallColored(collisionRects);
 	}
-	else if (direction == collisionDetectionRects[1]->direction && nextDirectionUp == sf::Vector2f(0, 0) && isCollisionDetectionRectColliding[1])
+	else if (direction == collisionDetectionRects[1]->direction && isCollisionDetectionRectColliding[1])
 	{
 		CheckCollisionWithWallColored(collisionRects);
 	}
-	else if (direction == collisionDetectionRects[2]->direction && nextDirectionDown == sf::Vector2f(0, 0) && isCollisionDetectionRectColliding[2])
+	else if (direction == collisionDetectionRects[2]->direction && isCollisionDetectionRectColliding[2])
 	{
 		CheckCollisionWithWallColored(collisionRects);
 	}
@@ -252,12 +252,12 @@ void Pacman::ReactToCollision()
 
 void Pacman::SetSpeedX()
 {
-	speedX = 300.0f;
+	speedX = 100.0f;
 }
 
 void Pacman::SetSpeedY()
 {
-	speedY = 300.0f;
+	speedY = 100.0f;
 }
 
 void Pacman::OutOfBounds()
