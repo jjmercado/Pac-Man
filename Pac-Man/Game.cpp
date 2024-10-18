@@ -1,10 +1,6 @@
 #include "Game.hpp"
 
-Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(), 
-				redGhost(sf::Color::Red, sf::Vector2f(350,350), 5.0f, Direction::Left), 
-				pinkGhost(sf::Color::Magenta, sf::Vector2f(300, 450), 10.0f, Direction::Right),
-				orangeGhost(sf::Color(255, 165, 0), sf::Vector2f(350, 450), 15.0f, Direction::Up),
-				turquoiseGhost(sf::Color::Cyan, sf::Vector2f(400, 450), 20.0f, Direction::Left),
+Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 				pacman(), live(2), currentPoints(0), dotCounter(0), fruitCounter(0), dotsAte(false), pelletsAte(false)
 {
 	if (!backgroundTexture.loadFromFile("..\\Background.png"))
@@ -40,6 +36,11 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 		highScoreLabel.setString("Highscore:");
 		highScore.setString("0");
 	}
+
+	ghosts[0] = new Ghost(sf::Color::Red, sf::Vector2f(350, 350), 5.0f, Direction::Left);
+	ghosts[1] = new Ghost(sf::Color::Magenta, sf::Vector2f(300, 450), 10.0f, Direction::Right);
+	ghosts[2] = new Ghost(sf::Color(255, 165, 0), sf::Vector2f(350, 450), 15.0f, Direction::Up);
+	ghosts[3] = new Ghost(sf::Color::Cyan, sf::Vector2f(400, 450), 20.0f, Direction::Left);
 
 	pacmanUiImages[0].setTexture(*pacman.GetTexture());
 	pacmanUiImages[0].setTextureRect(sf::IntRect(50, 0, 50, 50));
@@ -147,17 +148,18 @@ void Game::Events(sf::RenderWindow& window)
 void Game::Update(sf::Time deltaTime)
 {
 	pacman.Update(deltaTime, collisionRects);
-	redGhost.Update(deltaTime, collisionRects);
-	pinkGhost.Update(deltaTime, collisionRects);
-	orangeGhost.Update(deltaTime, collisionRects);
-	turquoiseGhost.Update(deltaTime, collisionRects);
+
+	for (auto& ghost : ghosts)
+	{
+		ghost->Update(deltaTime, collisionRects);
+	}
 
 	for (auto& signpost : signposts)
 	{
-		signpost->Update(deltaTime, redGhost);
-		signpost->Update(deltaTime, pinkGhost);
-		signpost->Update(deltaTime, orangeGhost);
-		signpost->Update(deltaTime, turquoiseGhost);
+		signpost->Update(deltaTime, *ghosts[0]);
+		signpost->Update(deltaTime, *ghosts[1]);
+		signpost->Update(deltaTime, *ghosts[2]);
+		signpost->Update(deltaTime, *ghosts[3]);
 	}
 
 	fruits[fruitCounter]->Update(deltaTime);
@@ -240,8 +242,12 @@ void Game::Update(sf::Time deltaTime)
 
 	for (auto& powerPellet : powerPellets)
 	{
-		if (pacman.CollisionWith(powerPellet))
+		if (pacman.CollisionWith(powerPellet) && powerPellet.isActive)
 		{
+			for (auto& ghost : ghosts)
+			{
+				ghost->SetEatable(true);
+			}
 			powerPellet.Remove();
 		}
 	}
@@ -257,12 +263,21 @@ void Game::Update(sf::Time deltaTime)
 		this->highScore.setString(this->currentScore.getString());
 	}
 
-	//if (pacman.CollisionWith(redGhost) || pacman.CollisionWith(pinkGhost) || pacman.CollisionWith(orangeGhost) || pacman.CollisionWith(turquoiseGhost))
-	//{
-	//	pacmanUiImages[live].setColor(sf::Color::Transparent);
-	//	live--;
-	//	Reset();
-	//}
+	for (auto& ghost : ghosts)
+	{
+		if (pacman.CollisionWith(*ghost) && !ghost->GetEatable())
+		{
+			pacmanUiImages[live].setColor(sf::Color::Transparent);
+			live--;
+			Reset();
+		}
+		else if(pacman.CollisionWith(*ghost) && ghost->GetEatable())
+		{
+			currentPoints += ghost->GetPoints();
+			this->currentScore.setString(std::to_string(currentPoints));
+			ghost->Reset();
+		}
+	}
 
 	if (fruitCounter >= fruits.size())
 	{
@@ -294,10 +309,11 @@ void Game::Render(sf::RenderWindow& window)
 		powerPellet.Render(window);
 	}
 
-	redGhost.Render(window);
-	pinkGhost.Render(window);
-	orangeGhost.Render(window);
-	turquoiseGhost.Render(window);
+	for (auto& ghost : ghosts)
+	{
+		ghost->Render(window);
+	}
+
 	//for(auto& rect : collisionRects)
 	//{
 	//	rect->Render(window);
@@ -322,10 +338,11 @@ void Game::Render(sf::RenderWindow& window)
 void Game::Reset()
 {
 	pacman.Reset();
-	redGhost.Reset(sf::Vector2f(350, 350), Direction::Left);
-	pinkGhost.Reset(sf::Vector2f(300, 450), Direction::Right);
-	orangeGhost.Reset(sf::Vector2f(350, 450), Direction::Up);
-	turquoiseGhost.Reset(sf::Vector2f(400, 450), Direction::Left);
+	
+	for (auto& ghost : ghosts)
+	{
+		ghost->Reset();
+	}
 
 	if (live < 0)
 	{
@@ -354,10 +371,10 @@ void Game::Reset()
 void Game::ResetWhenDotsGotAte()
 {
 	pacman.Reset();
-	redGhost.Reset(sf::Vector2f(350, 350), Direction::Left);
-	pinkGhost.Reset(sf::Vector2f(300, 450), Direction::Right);
-	orangeGhost.Reset(sf::Vector2f(350, 450), Direction::Up);
-	turquoiseGhost.Reset(sf::Vector2f(400, 450), Direction::Left);
+	for (auto& ghost : ghosts)
+	{
+		ghost->Reset();
+	}
 	dotsAte = false;
 	pelletsAte = false;
 
@@ -770,5 +787,3 @@ void Game::Grid(sf::RenderWindow& window)
 		}
 	}
 }
-
-// power pellets und geister fressen

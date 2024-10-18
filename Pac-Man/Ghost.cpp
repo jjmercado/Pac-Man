@@ -5,7 +5,12 @@
 // - Implement Ghost Movement
 // - Implement different start times for Ghosts
 
-Ghost::Ghost(sf::Color color, sf::Vector2f startPos, float startTime, sf::Vector2f startDirection) : currentFrame(0), startTime(startTime)
+Ghost::Ghost()
+{
+}
+
+Ghost::Ghost(sf::Color color, sf::Vector2f startPos, float startTime, sf::Vector2f startDirection) : currentFrame(0), startTime(startTime), eatable(false), color(color),
+			startDirection(startDirection), startPosition(startPos), points(200)
 {
 	if (!ghostTexture.loadFromFile("..\\Ghost.png"))
 	{
@@ -50,6 +55,15 @@ Ghost::~Ghost()
 
 void Ghost::Render(sf::RenderWindow& window)
 {
+	if (!eatable)
+	{
+		ghost.setColor(color);
+	}
+	else
+	{
+		ghost.setColor(sf::Color::Blue);
+	}
+
 	window.draw(ghost);
 	window.draw(eyesBackground);
 	window.draw(pupils);
@@ -57,9 +71,6 @@ void Ghost::Render(sf::RenderWindow& window)
 
 void Ghost::Update(sf::Time deltaTime, const std::vector<Collision*>& collisionRects)
 {
-	// timer zählt runter
-	// wenn timer abgelaufen, bewege ghost
-	// wenn ghost an wand stößt, bewege ghost in andere richtung
 	if (SetStartTime(startTime))
 	{
 		velocity.x = direction.x * speedX;
@@ -72,6 +83,15 @@ void Ghost::Update(sf::Time deltaTime, const std::vector<Collision*>& collisionR
 
 		Animation();
 		OutOfBounds();
+	}
+
+	if (eatable)
+	{
+		ResetEatableState(10.0f);
+	}
+	else
+	{
+		eatableClock.restart();
 	}
 }
 
@@ -120,6 +140,15 @@ bool Ghost::SetStartTime(float startTime)
 	return false;
 }
 
+void Ghost::ResetEatableState(float resetTime)
+{
+	sf::Time time = eatableClock.getElapsedTime();
+	if (time.asSeconds() >= resetTime)
+	{
+		eatable = false;
+	}
+}
+
 void Ghost::OutOfBounds()
 {
 	if (ghost.getPosition().x < 0 && eyesBackground.getPosition().x < 0 && pupils.getPosition().x < 0)
@@ -136,11 +165,27 @@ void Ghost::OutOfBounds()
 	}
 }
 
-void Ghost::Reset(sf::Vector2f ghostPos, sf::Vector2f direction)
+void Ghost::Reset()
 {
-	ghost.setPosition(ghostPos);
+	ghost.setPosition(startPosition);
 	eyesBackground.setPosition(ghost.getPosition().x + 15, ghost.getPosition().y + 15);
 	pupils.setPosition(eyesBackground.getPosition());
-	this->direction = direction;
+	this->direction = startDirection;
 	startClock.restart();
+	eatable = false;
+}
+
+void Ghost::SetEatable(bool value)
+{
+	eatable = value;
+}
+
+bool Ghost::GetEatable()
+{
+	return eatable;
+}
+
+int Ghost::GetPoints()
+{
+	return points;
 }

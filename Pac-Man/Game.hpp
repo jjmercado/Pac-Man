@@ -31,10 +31,7 @@ private:
 	sf::Sprite background;
 	void Reset();
 	void ResetWhenDotsGotAte();
-	Ghost redGhost;
-	Ghost pinkGhost;
-	Ghost orangeGhost;
-	Ghost turquoiseGhost;
+	std::array<Ghost*, 4> ghosts;
 	Pacman pacman;
 	std::vector<Collision*> collisionRects;
 	std::vector<Signpost*> signposts;
