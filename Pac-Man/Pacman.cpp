@@ -4,7 +4,7 @@ Pacman::Pacman() : currentFrame(0), directionChanged(false), isColliding(false),
 					nextDirectionDown(sf::Vector2f(0,0)), nextDirectionUp(sf::Vector2f(0, 0)), 
 					nextDirectionRight(sf::Vector2f(0, 0)), nextDirectionLeft(sf::Vector2f(0, 0))
 {
-	if (!pacmanTexture.loadFromFile("..\\pacman.png"))
+	if (!pacmanTexture.loadFromFile("./assets/pacman.png"))
 	{
 		std::cout << "Error loading pacman.png" << std::endl;
 	}
@@ -199,28 +199,28 @@ void Pacman::Animation(sf::Vector2f direction)
 		if (direction == sf::Vector2f(-1, 0))
 		{
 			pacman.setScale(-1.0, 1.0);
-			currentFrame = (currentFrame + 1) % 4; // Nächster Frame
+			currentFrame = (currentFrame + 1) % 4; // Nï¿½chster Frame
 			pacman.setTextureRect(pacmanFrames[currentFrame]);
 		}
 		else if(direction == sf::Vector2f(1, 0))
 		{
 			pacman.setScale(1.0, 1.0);
-			currentFrame = (currentFrame + 1) % 4; // Nächster Frame
+			currentFrame = (currentFrame + 1) % 4; // Nï¿½chster Frame
 			pacman.setTextureRect(pacmanFrames[currentFrame]);
 		}
 		else if (direction == sf::Vector2f(0, -1))
 		{
 			pacman.setScale(1.0, 1.0);
-			currentFrame = (currentFrame + 1) % 4; // Nächster Frame
+			currentFrame = (currentFrame + 1) % 4; // Nï¿½chster Frame
 			pacman.setTextureRect(pacmanFrames[currentFrame + 4]);
 		}
 		else if (direction == sf::Vector2f(0, 1))
 		{
 			pacman.setScale(1.0, -1.0);
-			currentFrame = (currentFrame + 1) % 4; // Nächster Frame
+			currentFrame = (currentFrame + 1) % 4; // Nï¿½chster Frame
 			pacman.setTextureRect(pacmanFrames[currentFrame + 4]);
 		}
-		lastUpdateTime = time; // Timer zurücksetzen
+		lastUpdateTime = time; // Timer zurï¿½cksetzen
 		clock.restart();
 	}
 }

@@ -12,7 +12,7 @@ Ghost::Ghost()
 Ghost::Ghost(sf::Color color, sf::Vector2f startPos, float startTime, sf::Vector2f startDirection) : currentFrame(0), startTime(startTime), eatable(false), color(color),
 			startDirection(startDirection), startPosition(startPos), points(200)
 {
-	if (!ghostTexture.loadFromFile("..\\Ghost.png"))
+	if (!ghostTexture.loadFromFile("./assets/Ghost.png"))
 	{
 		std::cout << "Error loading ghost.png" << std::endl;
 	}
@@ -24,7 +24,7 @@ Ghost::Ghost(sf::Color color, sf::Vector2f startPos, float startTime, sf::Vector
 		ghost.setPosition(startPos);
 	}
 
-	if (!eyesBackgroundTexture.loadFromFile("..\\eyesBack.png"))
+	if (!eyesBackgroundTexture.loadFromFile("./assets/eyesBack.png"))
 	{
 		std::cout << "Error loading eyesbackground.png" << std::endl;
 	}
@@ -34,7 +34,7 @@ Ghost::Ghost(sf::Color color, sf::Vector2f startPos, float startTime, sf::Vector
 		eyesBackground.setPosition(ghost.getPosition().x + 15, ghost.getPosition().y + 15);
 	}
 
-	if (!pupilsTexture.loadFromFile("..\\pupils.png"))
+	if (!pupilsTexture.loadFromFile("./assets/pupils.png"))
 	{
 		std::cout << "Error loading pupils.png" << std::endl;
 	}
@@ -108,9 +108,9 @@ void Ghost::Animation()
 
 	if (time - lastUpdateTime >= sf::seconds(delay))
 	{
-		currentFrame = (currentFrame + 1) % ghostFrames.size(); // Nächster Frame
+		currentFrame = (currentFrame + 1) % ghostFrames.size(); // Nï¿½chster Frame
 		ghost.setTextureRect(ghostFrames[currentFrame]);
-		lastUpdateTime = time; // Timer zurücksetzen
+		lastUpdateTime = time; // Timer zurï¿½cksetzen
 		animationClock.restart();
 	}
 }
@@ -127,7 +127,7 @@ sf::Sprite Ghost::GetSprite()
 
 bool Ghost::SetStartTime(float startTime)
 {
-	// Setzt die Startzeit für den Ghost
+	// Setzt die Startzeit fï¿½r den Ghost
 	// startTime = 0 -> Ghost bewegt sich sofort
 	// startTime = 5 -> Ghost bewegt sich nach 5 Sekunden
 	// startTime = 10 -> Ghost bewegt sich nach 10 Sekunden

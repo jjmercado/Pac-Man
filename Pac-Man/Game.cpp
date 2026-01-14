@@ -6,7 +6,7 @@
 Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 				pacman(), live(2), currentPoints(0), dotCounter(0), fruitCounter(0), dotsAte(false), pelletsAte(false)
 {
-	if (!backgroundTexture.loadFromFile("..\\Background.png"))
+	if (!backgroundTexture.loadFromFile("./assets/Background.png"))
 	{
 		std::cout << "Error loading background.png" << std::endl;
 	}
@@ -16,7 +16,7 @@ Game::Game() : frameCount(0), fpsClock(), backgroundTexture(), background(),
 		background.setPosition(0, 100);
 	}
 
-	if (!font.loadFromFile("..\\kenvector_future_thin.ttf"))
+	if (!font.loadFromFile("./assets/kenvector_future_thin.ttf"))
 	{
 		std::cout << "Error loading font" << std::endl;
 	}

@@ -6,7 +6,7 @@ Fruit::Fruit()
 
 Fruit::Fruit(sf::IntRect rect, int points) : currentState(State::INACTIVE), called(0)
 {
-	if (!texture.loadFromFile("..\\fruits.png", rect))
+	if (!texture.loadFromFile(".\\assets\\fruits.png", rect))
 	{
 		std::cout << "Failed loading fruit" << std::endl;
 	}
@@ -102,7 +102,7 @@ void Fruit::ResetSpawnCounter()
 
 void Fruit::SetStartTime()
 {
-	// Setzt die Startzeit für den Ghost
+	// Setzt die Startzeit fï¿½r den Ghost
 	// startTime = 0 -> Ghost bewegt sich sofort
 	// startTime = 5 -> Ghost bewegt sich nach 5 Sekunden
 	// startTime = 10 -> Ghost bewegt sich nach 10 Sekunden
