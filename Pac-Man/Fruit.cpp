@@ -6,7 +6,7 @@ Fruit::Fruit()
 
 Fruit::Fruit(sf::IntRect rect, int points) : currentState(State::INACTIVE), called(0)
 {
-	if (!texture.loadFromFile(".\\assets\\fruits.png", rect))
+	if (!texture.loadFromFile("./assets/fruits.png", rect))
 	{
 		std::cout << "Failed loading fruit" << std::endl;
 	}
