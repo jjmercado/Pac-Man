@@ -115,12 +115,11 @@ void Game::Run(sf::RenderWindow& window)
 		sf::Time deltaTime = clock.restart();
 		timeSinceLastUpdate += deltaTime;
 
+		Events(window);
 		while (timeSinceLastUpdate > TimePerFrame)
 		{
 			timeSinceLastUpdate -= TimePerFrame;
-			Events(window);
 			Update(TimePerFrame);
-			Render(window);
 
 			frameCount++;
 			if (fpsClock.getElapsedTime().asSeconds() >= 1.0f)
@@ -131,6 +130,7 @@ void Game::Run(sf::RenderWindow& window)
 			}
 		}
 
+		Render(window);
 	}
 }
 
