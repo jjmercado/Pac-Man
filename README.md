@@ -10,7 +10,6 @@ This project is my implementation of the arcade classic Pac-Man, developed in C+
 
 The player controls Pac-Man through a maze with the objective of eating all the pellets while evading four ghosts. Key features include:
 
-- **AI Behavior:** Each ghost (Blinky, Pinky, Inky, and Clyde) features its own unique pursuit pattern.
 - **Power Pellets:** Collecting large pellets makes the ghosts temporarily vulnerable, allowing Pac-Man to eat them.
 - **Level Structure:** A classic tile-based maze featuring teleportation tunnels on the sides.
 

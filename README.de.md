@@ -10,8 +10,6 @@ Dieses Projekt ist meine Implementierung des Arcade-Klassikers Pac-Man, entwicke
 
 Der Spieler steuert Pac-Man durch ein Labyrinth mit dem Ziel, alle Punkte (Pellets) zu fressen, während er vier Geistern ausweicht. Die Kern-Features umfassen:
 
-- **KI-Verhalten:** Jeder Geist (Blinky, Pinky, Inky und Clyde) besitzt ein individuelles Verfolgungsmuster.
-
 - **Power-Pellets:** Das Einsammeln großer Punkte macht die Geister kurzzeitig verwundbar und ermöglicht es Pac-Man, sie zu fressen.
 
 - **Level-Struktur:** Ein klassisches Kachel-basiertes Labyrinth mit Teleport-Tunneln an den Seiten.
