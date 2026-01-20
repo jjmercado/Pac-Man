@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(Asteroids)
+project(Pac-Man)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -15,14 +15,14 @@ add_definitions(-DSFML_STATIC)
 include_directories("${SFML_PATH}/include")
 link_directories("${SFML_PATH}/lib")
 
-file(GLOB SOURCES "Asteroids/*.cpp")
+file(GLOB SOURCES "Pac-Man/*.cpp")
 
-add_executable(Asteroids ${SOURCES})
+add_executable(Pac-Man ${SOURCES})
 
 if(WIN32)
     # Windows Static Linking
     # Reihenfolge ist wichtig: Erst Graphics, dann Window, dann System
-    target_link_libraries(Asteroids
+    target_link_libraries(pac-man
         sfml-graphics-s 
         sfml-window-s 
         sfml-system-s
@@ -36,7 +36,7 @@ elseif(UNIX)
     # Linux Static Linking
     # Hier müssen alle Abhängigkeiten von SFML manuell gelistet werden,
     # da wir keine Shared Libs nutzen, die das automatisch machen.
-    target_link_libraries(Asteroids
+    target_link_libraries(pac-man
         sfml-graphics-s
         sfml-window-s
         sfml-system-s
@@ -61,6 +61,12 @@ elseif(UNIX)
     )
 endif()
 
-if(EXISTS "${CMAKE_SOURCE_DIR}/assets")
-    file(COPY "${CMAKE_SOURCE_DIR}/assets" DESTINATION "${CMAKE_BINARY_DIR}")
+if(WIN32)
+    if(EXISTS "${CMAKE_SOURCE_DIR}/assets")
+        file(COPY "${CMAKE_SOURCE_DIR}/assets" DESTINATION "${CMAKE_BINARY_DIR}/Release")
+    endif()
+elseif(UNIX)
+    if(EXISTS "${CMAKE_SOURCE_DIR}/assets")
+        file(COPY "${CMAKE_SOURCE_DIR}/assets" DESTINATION "${CMAKE_BINARY_DIR}")
+    endif()
 endif()
